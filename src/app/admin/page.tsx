@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface PipelineData {
@@ -64,7 +63,6 @@ const MOCK_PIPELINE: PipelineData[] = [
 
 export default function AdminPage() {
   const router = useRouter();
-  const [selectedPressure, setSelectedPressure] = useState<string | null>(null);
 
   const totalDiscovered = MOCK_PIPELINE.reduce((sum, p) => sum + p.discovered, 0);
   const totalQualified = MOCK_PIPELINE.reduce((sum, p) => sum + p.qualified, 0);
@@ -82,17 +80,21 @@ export default function AdminPage() {
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-6 py-20">
         {/* Header */}
-        <div className="mb-16">
-          <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-            Admin
+        <div className="mb-16 flex justify-between items-start">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
+              Admin
+            </div>
+            <h1 className="font-display text-4xl text-navy">
+              Pipeline.
+            </h1>
           </div>
-          <h1 className="font-display text-5xl leading-tight text-navy mb-6">
-            Pipeline Dashboard.
-          </h1>
-          <p className="text-muted max-w-2xl">
-            Complete view of all discovered opportunities, outreach activity, and revenue pipeline.
-            Track conversion funnel by pressure type.
-          </p>
+          <a
+            href="/"
+            className="text-brand hover:text-brand-dark text-sm font-medium"
+          >
+            Decision Screen →
+          </a>
         </div>
 
         {/* Key Metrics */}
