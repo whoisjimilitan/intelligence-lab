@@ -34,6 +34,22 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-6xl mx-auto px-6 py-20">
+        {/* Top Navigation */}
+        <div className="flex justify-end items-center gap-8 mb-20">
+          <a
+            href="/upload"
+            className="text-brand hover:text-brand-dark text-sm font-medium transition-colors"
+          >
+            CSV Upload
+          </a>
+          <a
+            href="/validate"
+            className="text-brand hover:text-brand-dark text-sm font-medium transition-colors"
+          >
+            Validation
+          </a>
+        </div>
+
         {!searchPerformed ? (
           <>
             {/* Hero Section */}
@@ -59,7 +75,7 @@ export default function HomePage() {
             {/* Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-gray-100 pt-20">
               <div>
-                <h4 className="font-display text-xl font-600 text-navy mb-3">
+                <h4 className="font-display text-xl font-semibold text-navy mb-3">
                   Market Scanning
                 </h4>
                 <p className="text-muted leading-relaxed text-sm">
@@ -68,7 +84,7 @@ export default function HomePage() {
                 </p>
               </div>
               <div>
-                <h4 className="font-display text-xl font-600 text-navy mb-3">
+                <h4 className="font-display text-xl font-semibold text-navy mb-3">
                   Buying Intelligence
                 </h4>
                 <p className="text-muted leading-relaxed text-sm">
@@ -77,7 +93,7 @@ export default function HomePage() {
                 </p>
               </div>
               <div>
-                <h4 className="font-display text-xl font-600 text-navy mb-3">
+                <h4 className="font-display text-xl font-semibold text-navy mb-3">
                   Safety Evaluation
                 </h4>
                 <p className="text-muted leading-relaxed text-sm">

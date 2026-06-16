@@ -25,23 +25,23 @@
 
   /* Typography System */
   h1 {
-    @apply font-display text-5xl leading-tight font-700 tracking-tight;
+    @apply font-display text-5xl leading-tight font-bold tracking-tight;
   }
 
   h2 {
-    @apply font-display text-4xl leading-tight font-600;
+    @apply font-display text-4xl leading-tight font-semibold;
   }
 
   h3 {
-    @apply font-display text-2xl leading-snug font-600;
+    @apply font-display text-2xl leading-snug font-semibold;
   }
 
   h4 {
-    @apply font-sans text-lg font-600 tracking-tight;
+    @apply font-sans text-lg font-semibold tracking-tight;
   }
 
   h5 {
-    @apply font-sans text-base font-600 uppercase tracking-wide text-muted;
+    @apply font-sans text-base font-semibold uppercase tracking-wide text-muted;
   }
 
   p {
@@ -84,6 +84,6 @@
   }
 
   .text-muted-label {
-    @apply text-xs font-sans font-600 uppercase tracking-wide text-muted;
+    @apply text-xs font-sans font-semibold uppercase tracking-wide text-muted;
   }
 }
