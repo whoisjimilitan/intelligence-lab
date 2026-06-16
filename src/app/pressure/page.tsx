@@ -142,7 +142,7 @@ export default function PressurePage() {
               Total Companies
             </div>
             <p className="font-display text-3xl font-semibold text-navy">
-              {companies.length}
+              {MOCK_COMPANIES.length}
             </p>
           </div>
           <div>
@@ -166,7 +166,7 @@ export default function PressurePage() {
               Engagement
             </div>
             <p className="font-display text-3xl font-semibold text-navy">
-              {engagementRate}/{companies.length}
+              {engagementRate}/{MOCK_COMPANIES.length}
             </p>
           </div>
         </div>
