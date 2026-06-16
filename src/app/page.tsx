@@ -36,49 +36,56 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="container-max section-spacing">
         {/* Header */}
-        <div className="flex justify-between items-start mb-16">
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-              Operations
+        <div className="mb-20 flex justify-between items-start">
+          <div className="flex-1">
+            <h5 className="mb-6">Decision System</h5>
+            {searchPerformed ? (
+              <div>
+                <h2>Market: {lastPostcode}</h2>
+                <p className="mt-4 text-base text-muted max-w-2xl">
+                  Opportunities ranked by probability. ACT NOW requires immediate engagement. WATCH has potential but lower confidence.
+                </p>
+              </div>
+            ) : (
+              <div>
+                <h1>Discover Operational Friction.</h1>
+                <p className="mt-6 text-lg text-muted max-w-3xl leading-relaxed">
+                  Intelligence Lab identifies businesses in your market experiencing pressures Saint & Story solves. Qualification happens before outreach.
+                </p>
+              </div>
+            )}
+          </div>
+          {!searchPerformed && (
+            <div className="text-right">
+              <a href="/admin" className="text-sm font-semibold text-brand hover:text-blue-700">
+                Pipeline →
+              </a>
             </div>
-            <h1 className="font-display text-4xl text-navy">
-              {searchPerformed ? `Market: ${lastPostcode}` : "Decision Screen."}
-            </h1>
-          </div>
-          <div className="flex gap-6 text-sm">
-            <a href="/admin" className="text-brand hover:text-brand-dark font-medium">
-              Pipeline
-            </a>
-            <a href="/upload" className="text-brand hover:text-brand-dark font-medium">
-              Upload
-            </a>
-          </div>
+          )}
         </div>
 
         {!searchPerformed ? (
           <>
-            {/* Search Card */}
-            <div className="mb-20">
+            {/* Search */}
+            <div className="mb-24">
               <PostcodeSearch onSearch={handleSearch} isLoading={isLoading} />
             </div>
 
-            {/* How It Works — Minimal */}
-            <div className="border-t border-gray-100 pt-16">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-8">
-                Process
-              </p>
-              <div className="grid grid-cols-4 gap-8">
+            {/* Process */}
+            <div className="border-t border-subtle pt-20">
+              <h5 className="mb-12">How It Works</h5>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
                 {[
-                  { step: "Detect", desc: "Identify pressures" },
-                  { step: "Test", desc: "Fit checks" },
-                  { step: "Verify", desc: "Stress test" },
-                  { step: "Act", desc: "Make decision" },
+                  { step: "Detect", desc: "Scan by postcode. Identify pressures by industry." },
+                  { step: "Qualify", desc: "Test psychological, commercial, logistics fit." },
+                  { step: "Verify", desc: "Stress test messages. Validate safety. Rank by probability." },
+                  { step: "Act", desc: "Send recognition outreach. Track engagement. Learn." },
                 ].map((item, idx) => (
                   <div key={idx}>
-                    <p className="text-navy font-semibold mb-1">{item.step}</p>
-                    <p className="text-xs text-muted">{item.desc}</p>
+                    <h4 className="text-brand mb-3">{item.step}</h4>
+                    <p className="text-sm leading-relaxed text-muted">{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -86,41 +93,29 @@ export default function HomePage() {
           </>
         ) : (
           <>
-            {/* Results Stats */}
-            <div className="grid grid-cols-3 gap-8 mb-12 pb-12 border-b border-gray-100">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                  Total
-                </p>
-                <p className="font-display text-3xl text-navy font-semibold">
-                  {opportunities.length}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                  Act Now
-                </p>
-                <p className="font-display text-3xl text-navy font-semibold">
-                  {actNow.length}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                  Watch
-                </p>
-                <p className="font-display text-3xl text-navy font-semibold">
-                  {watch.length}
-                </p>
+            {/* Results Header */}
+            <div className="mb-16 pb-16 border-b border-subtle">
+              <div className="grid grid-cols-3 gap-12">
+                <div>
+                  <h5 className="mb-3">Total Opportunities</h5>
+                  <p className="text-metric">{opportunities.length}</p>
+                </div>
+                <div>
+                  <h5 className="mb-3">Act Now</h5>
+                  <p className="text-metric" style={{ color: 'var(--color-brand)' }}>{actNow.length}</p>
+                </div>
+                <div>
+                  <h5 className="mb-3">Watch</h5>
+                  <p className="text-metric text-muted">{watch.length}</p>
+                </div>
               </div>
             </div>
 
             {/* ACT NOW */}
             {actNow.length > 0 && (
-              <div className="mb-12">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-6">
-                  ACT NOW
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="mb-20">
+                <h5 className="mb-8">Highest Priority</h5>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {actNow.map((opp, idx) => (
                     <OpportunityCard
                       key={idx}
@@ -136,11 +131,9 @@ export default function HomePage() {
 
             {/* WATCH */}
             {watch.length > 0 && (
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-6 opacity-50">
-                  WATCH
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 opacity-50">
+              <div className="opacity-60">
+                <h5 className="mb-8">Watch (Lower Confidence)</h5>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {watch.map((opp, idx) => (
                     <OpportunityCard
                       key={idx}
