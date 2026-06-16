@@ -85,7 +85,7 @@ export default function CompanyPage() {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       // Record in email tracking system
-      const emailRecord = sendEmail(
+      sendEmail(
         MOCK_COMPANY.id,
         MOCK_COMPANY.name,
         MOCK_COMPANY.email,
