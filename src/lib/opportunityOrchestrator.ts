@@ -4,6 +4,8 @@ import { computeBuyingProbability, estimateProbabilityForCluster } from "@/engin
 import { makeDecision } from "@/engines/decisionEngine";
 import { simulateRecognition } from "@/engines/recognitionSimulator";
 import { runStressTest } from "@/engines/stressTest";
+import { evaluateInterventionFit } from "@/engines/interventionFitFilter";
+import { getWhyThisMatters } from "@/engines/outcomeMemory";
 
 interface OrchestratorInput {
   postcode: string;
@@ -12,8 +14,7 @@ interface OrchestratorInput {
 }
 
 export async function analyzeOpportunity(
-  cluster: PressureCluster,
-  postcode: string
+  cluster: PressureCluster
 ): Promise<OpportunityDetail> {
   // Estimate buying probability for this cluster
   const buyingProbability = computeBuyingProbability({
@@ -21,6 +22,13 @@ export async function analyzeOpportunity(
     urgency: 0.65,
     logisticsFit: 0.72,
     marketSimilarity: 0.68,
+  });
+
+  // Check intervention fit (critical safeguard)
+  const interventionFit = evaluateInterventionFit({
+    pressureName: cluster.name,
+    buyingProbability: cluster.buyingProbability,
+    urgencySignal: buyingProbability.urgency,
   });
 
   // Make decision
@@ -32,7 +40,7 @@ export async function analyzeOpportunity(
     urgency: buyingProbability.urgency,
   });
 
-  // Simulate recognition message
+  // Simulate recognition message (with 3 fit tests)
   const recognitionSimulation = simulateRecognition({
     pressureName: cluster.name,
     businessCount: cluster.businessCount,
@@ -48,11 +56,20 @@ export async function analyzeOpportunity(
     logisticsFit: recognitionSimulation.logisticsFit,
   });
 
-  // Build "why this was surfaced" narrative
+  // Build "why this was surfaced" narrative using outcome memory
+  const outcomeInsights = getWhyThisMatters(cluster.name);
   const whyThisSurfaced = [
+    ...outcomeInsights, // Pattern matching + conversion signals
     ...decision.reasoning,
     ...stressTest.notes,
   ];
+
+  // Add safeguard notes
+  if (!interventionFit.shouldSurface) {
+    whyThisSurfaced.unshift(
+      `⚠ Intervention fit issue: ${interventionFit.suppresionReason}`
+    );
+  }
 
   if (cluster.businessCount > 20) {
     whyThisSurfaced.push(`Large market cluster (${cluster.businessCount} businesses)`);
@@ -79,7 +96,7 @@ export async function orchestrateMarketAnalysis(
 
   const opportunities = await Promise.all(
     scanResults.opportunityClusters.map((cluster) =>
-      analyzeOpportunity(cluster, input.postcode)
+      analyzeOpportunity(cluster)
     )
   );
 

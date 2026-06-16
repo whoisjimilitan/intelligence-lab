@@ -1,4 +1,10 @@
-import { RecognitionSimulation } from "@/modules/types";
+export interface RecognitionSimulation {
+  message: string;
+  psychologicalFit: number; // 0-10: helpful, credible, not invasive
+  commercialFit: number; // 0-10: budget, urgency, decision-maker
+  logisticsFit: number; // 0-10: can we solve this?
+  overallViability: number; // 0-10: weighted average
+}
 
 interface RecognitionSimulatorInput {
   pressureName: string;
@@ -110,33 +116,42 @@ export function simulateRecognition(
 
   if (!messaging) {
     // Fallback for unknown pressure types
+    const psych = 6.5;
+    const comm = 6.5;
+    const log = 6.5;
     return {
       message: `We noticed operational pressures affecting businesses in your area.`,
-      psychologicalFit: 6.5,
-      commercialFit: 6.5,
-      logisticsFit: 6.5,
+      psychologicalFit: psych,
+      commercialFit: comm,
+      logisticsFit: log,
+      overallViability: (psych + comm + log) / 3,
     };
   }
 
   const message = [messaging.recognition, messaging.implication, messaging.solution].join("\n\n");
 
+  const psych = generateFit(
+    messaging.psychFit,
+    input.businessCount,
+    input.severity
+  );
+  const comm = generateFit(
+    messaging.commFit,
+    input.businessCount,
+    input.severity
+  );
+  const log = generateFit(
+    messaging.logFit,
+    input.businessCount,
+    input.severity
+  );
+
   return {
     message,
-    psychologicalFit: generateFit(
-      messaging.psychFit,
-      input.businessCount,
-      input.severity
-    ),
-    commercialFit: generateFit(
-      messaging.commFit,
-      input.businessCount,
-      input.severity
-    ),
-    logisticsFit: generateFit(
-      messaging.logFit,
-      input.businessCount,
-      input.severity
-    ),
+    psychologicalFit: psych,
+    commercialFit: comm,
+    logisticsFit: log,
+    overallViability: (psych + comm + log) / 3,
   };
 }
 
