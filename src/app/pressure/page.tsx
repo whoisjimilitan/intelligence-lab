@@ -83,17 +83,16 @@ export default function PressurePage() {
   const searchParams = useSearchParams();
   const pressureName = searchParams.get("name") || "Prescription Fulfilment";
 
-  const [companies, setCompanies] = useState<Company[]>(MOCK_COMPANIES);
   const [filterDecision, setFilterDecision] = useState<"ALL" | "ACT" | "WATCH" | "IGNORE">("ALL");
 
   const pressure = PRESSURE_TAXONOMY.find((p) => p.name === pressureName);
   const filteredCompanies = filterDecision === "ALL"
-    ? companies
-    : companies.filter((c) => c.decision === filterDecision);
+    ? MOCK_COMPANIES
+    : MOCK_COMPANIES.filter((c) => c.decision === filterDecision);
 
-  const actCount = companies.filter((c) => c.decision === "ACT").length;
-  const watchCount = companies.filter((c) => c.decision === "WATCH").length;
-  const engagementRate = companies.filter((c) => c.engagementStatus !== "not_sent").length;
+  const actCount = MOCK_COMPANIES.filter((c) => c.decision === "ACT").length;
+  const watchCount = MOCK_COMPANIES.filter((c) => c.decision === "WATCH").length;
+  const engagementRate = MOCK_COMPANIES.filter((c) => c.engagementStatus !== "not_sent").length;
 
   const getStatusColor = (status: string) => {
     if (status === "ACT") return "text-red-600 bg-red-50";
