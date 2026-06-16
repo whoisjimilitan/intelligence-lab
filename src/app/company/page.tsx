@@ -61,7 +61,6 @@ export default function CompanyPage() {
   const router = useRouter();
 
   const [company, setCompany] = useState<CompanyData>(MOCK_COMPANY);
-  const [showEmail, setShowEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
