@@ -46,6 +46,12 @@ export default function HomePage() {
           </div>
           <div className="flex gap-8">
             <a
+              href="/admin"
+              className="text-brand hover:text-brand-dark text-sm font-medium transition-colors"
+            >
+              Admin Dashboard
+            </a>
+            <a
               href="/upload"
               className="text-brand hover:text-brand-dark text-sm font-medium transition-colors"
             >

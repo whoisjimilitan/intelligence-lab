@@ -19,9 +19,17 @@ export default function OpportunityCard({
 }: OpportunityCardProps) {
   const config = DECISION_CONFIG[opportunity.decision.decision];
 
+  const handleCardClick = () => {
+    if (onClick) {
+      onClick();
+    }
+    // Or navigate to pressure page
+    window.location.href = `/pressure?name=${encodeURIComponent(opportunity.cluster.name)}`;
+  };
+
   return (
     <button
-      onClick={onClick}
+      onClick={handleCardClick}
       className="card-premium w-full text-left hover:shadow-md transition-all cursor-pointer"
     >
       {/* Header */}
