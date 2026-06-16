@@ -6,9 +6,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { emailTracker } from "@/lib/email-tracking";
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
-    const pressureType = request.nextUrl.searchParams.get("pressure");
+    const pressureType = _request.nextUrl.searchParams.get("pressure");
 
     let emails;
     if (pressureType) {
