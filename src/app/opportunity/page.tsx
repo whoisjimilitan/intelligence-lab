@@ -1,12 +1,12 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import OpportunityDetailComponent from "@/components/OpportunityDetail";
 import { OpportunityDetail } from "@/modules/types";
 import { orchestrateMarketAnalysis } from "@/lib/opportunityOrchestrator";
 
-export default function OpportunityPage() {
+function OpportunityContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -72,5 +72,21 @@ export default function OpportunityPage() {
         />
       </div>
     </div>
+  );
+}
+
+export default function OpportunityPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-muted">Loading opportunity details...</p>
+          </div>
+        </div>
+      }
+    >
+      <OpportunityContent />
+    </Suspense>
   );
 }

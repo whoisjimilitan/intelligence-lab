@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { PRESSURE_TAXONOMY } from "@/engines/pressureTaxonomy";
 
@@ -78,7 +78,7 @@ const MOCK_COMPANIES: Company[] = [
   },
 ];
 
-export default function PressurePage() {
+function PressureContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pressureName = searchParams.get("name") || "Prescription Fulfilment";
@@ -257,5 +257,21 @@ export default function PressurePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PressurePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-white flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-muted">Loading pressure data...</p>
+          </div>
+        </div>
+      }
+    >
+      <PressureContent />
+    </Suspense>
   );
 }

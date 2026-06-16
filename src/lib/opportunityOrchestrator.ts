@@ -1,6 +1,6 @@
 import { OpportunityDetail, PressureCluster } from "@/modules/types";
 import { scanMarket } from "@/engines/marketScanner";
-import { computeBuyingProbability, estimateProbabilityForCluster } from "@/engines/buyingProbability";
+import { computeBuyingProbability } from "@/engines/buyingProbability";
 import { makeDecision } from "@/engines/decisionEngine";
 import { simulateRecognition } from "@/engines/recognitionSimulator";
 import { runStressTest } from "@/engines/stressTest";

@@ -56,7 +56,6 @@ export function computeBuyingProbability(
 
 export function estimateProbabilityForCluster(
   businessCount: number,
-  industryType: string,
   pressureType: string
 ): number {
   // Heuristic: larger clusters have lower individual probability but higher total opportunity
