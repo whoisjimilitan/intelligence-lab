@@ -2,7 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getEmailRecord, sendEmail, recordEmailOpen, recordEmailClick, recordEmailReply } from "@/lib/emailTracking";
+import {
+  getEmailRecord,
+  sendEmail,
+  recordEmailOpen,
+  recordEmailClick,
+  recordEmailReply,
+} from "@/lib/emailTracking";
 
 interface CompanyData {
   id: string;
@@ -15,7 +21,13 @@ interface CompanyData {
   pressure: string;
   buyingProbability: number;
   urgencySignal: number;
-  outreachStatus: "not_sent" | "sent" | "opened" | "clicked" | "replied" | "converted";
+  outreachStatus:
+    | "not_sent"
+    | "sent"
+    | "opened"
+    | "clicked"
+    | "replied"
+    | "converted";
   emailSentAt?: string;
   opens: number;
   clicks: number;
@@ -29,7 +41,7 @@ const MOCK_COMPANY: CompanyData = {
   email: "manager@morrisons-pharm.co.uk",
   phone: "0161 234 5678",
   website: "www.morrisons-pharmacy.co.uk",
-  pressure: "Prescription Fulfilment",
+  pressure: "Time-Critical Movement",
   buyingProbability: 0.78,
   urgencySignal: 0.72,
   outreachStatus: "not_sent",
@@ -37,29 +49,20 @@ const MOCK_COMPANY: CompanyData = {
   clicks: 0,
 };
 
-const RECOGNITION_EMAIL = `Subject: We noticed your prescription fulfillment delays
+const RECOGNITION_EMAIL = `I need you to answer this honestly:
 
-Hi there,
+Some pharmacies in Manchester say prescription orders arrive during 10am rush with tight delivery windows, and courier gaps create customer panic.
 
-We noticed pharmacies in your area experiencing delays in prescription fulfillment.
+You're probably calling asking 'can you get this there by noon?' and scrambling to find coverage.
 
-This often leads to slower patient service and operational strain.
+Some days you solve it. Some days they go to competitors.
 
-We help stabilise same-day delivery flow through optimized logistics and fulfillment workflows. For pharmacies like yours, this typically means:
-- 40% faster turnaround times
-- 95%+ on-time delivery rates
-- Reduced staff overtime costs
+Sound like your morning?
 
-Most pharmacies in your area are seeing this impact. Would you be open to a 15-minute call to explore how this could work for Morrison's?
-
-Best regards,
-Saint & Story Operations Team
-
-P.S. We help 30+ pharmacies across the UK with this exact challenge.`;
+[YES] [NO]`;
 
 export default function CompanyPage() {
   const router = useRouter();
-
   const [company, setCompany] = useState<CompanyData>(MOCK_COMPANY);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -145,35 +148,40 @@ export default function CompanyPage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="container-max section-spacing">
-        {/* Back */}
-        <button
-          onClick={() => router.back()}
-          className="btn-ghost mb-12"
-        >
+        {/* Back Button */}
+        <button onClick={() => router.back()} className="btn-ghost mb-16">
           ← Back
         </button>
 
-        {/* OPERATOR QUESTION: Should I contact this business? */}
-        <div className="mb-16 pb-16 border-b border-subtle">
-          <h1 className="mb-4">{company.name}</h1>
-          <p className="text-base text-muted mb-8">{company.industry} • {company.postcode}</p>
+        {/* QUESTION: Should I contact this business? */}
+        <div className="mb-20 pb-16 border-b border-subtle">
+          <h5 className="mb-6">Opportunity Details</h5>
+          <h1>{company.name}</h1>
+          <p className="text-base text-muted mt-4">
+            {company.industry} • {company.postcode}
+          </p>
 
-          {/* WHY (The Reasoning) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Decision Reasoning */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mt-16">
             <div>
-              <h5 className="mb-2">Operational Pressure</h5>
-              <p className="text-base font-semibold">{company.pressure}</p>
+              <h5 className="mb-4">Detected Pressure</h5>
+              <p className="text-lg font-semibold">{company.pressure}</p>
             </div>
             <div>
-              <h5 className="mb-2">Engagement Probability</h5>
-              <p className="text-3xl font-semibold" style={{ color: 'var(--color-brand)' }}>
+              <h5 className="mb-4">Engagement Probability</h5>
+              <p
+                className="text-4xl font-bold"
+                style={{ color: "var(--color-brand)" }}
+              >
                 {Math.round(company.buyingProbability * 100)}%
               </p>
-              <p className="text-sm text-muted mt-2">Based on pressure signals</p>
+              <p className="text-sm text-muted mt-2">Based on signals</p>
             </div>
             <div>
-              <h5 className="mb-2">Contact Status</h5>
-              <p className="text-base font-semibold capitalize">{getStatusLabel(company.outreachStatus)}</p>
+              <h5 className="mb-4">Status</h5>
+              <p className="text-lg font-semibold capitalize">
+                {getStatusLabel(company.outreachStatus)}
+              </p>
               {company.emailSentAt && (
                 <p className="text-sm text-muted mt-2">{company.emailSentAt}</p>
               )}
@@ -181,32 +189,27 @@ export default function CompanyPage() {
           </div>
         </div>
 
-        {/* THE MESSAGE (What will they see?) */}
-        <div className="mb-16 pb-16 border-b border-subtle">
-          <h3 className="mb-6">Message</h3>
-          <div className="bg-surface rounded-lg p-8">
-            <div className="bg-white rounded-lg p-6 border border-subtle">
-              <p className="text-sm leading-relaxed whitespace-pre-wrap text-navy">
-                {RECOGNITION_EMAIL.split('\n\n')[0]}
-              </p>
-              <p className="text-sm leading-relaxed mt-6 whitespace-pre-wrap text-navy">
-                {RECOGNITION_EMAIL.split('\n\n').slice(1, -1).join('\n\n')}
-              </p>
-            </div>
+        {/* MESSAGE: What they'll see */}
+        <div className="mb-20 pb-16 border-b border-subtle">
+          <h5 className="mb-8">Recognition Email</h5>
+          <div className="bg-white border border-subtle rounded-lg p-12">
+            <p className="text-sm leading-relaxed whitespace-pre-wrap text-navy font-medium">
+              {RECOGNITION_EMAIL}
+            </p>
           </div>
         </div>
 
-        {/* CONTACT DETAILS (Secondary Info) */}
-        <div className="mb-16 pb-16 border-b border-subtle">
-          <h5 className="mb-4">Contact Information</h5>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {/* CONTACT INFORMATION */}
+        <div className="mb-20 pb-16 border-b border-subtle">
+          <h5 className="mb-8">Contact Details</h5>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             <div>
               <p className="text-label mb-2">Email</p>
-              <p className="text-base text-navy">{company.email}</p>
+              <p className="text-base">{company.email}</p>
             </div>
             <div>
               <p className="text-label mb-2">Phone</p>
-              <p className="text-base text-navy">{company.phone}</p>
+              <p className="text-base">{company.phone}</p>
             </div>
             {company.website && (
               <div>
@@ -215,7 +218,7 @@ export default function CompanyPage() {
                   href={`https://${company.website}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-brand hover:text-blue-700 text-base"
+                  className="text-base text-brand hover:text-blue-700"
                 >
                   {company.website}
                 </a>
@@ -224,32 +227,33 @@ export default function CompanyPage() {
           </div>
         </div>
 
-        {/* ENGAGEMENT (If sent) */}
+        {/* ENGAGEMENT: If sent, show engagement */}
         {company.outreachStatus !== "not_sent" && (
-          <div className="mb-16 pb-16 border-b border-subtle">
-            <h3 className="mb-6">Engagement</h3>
-            <div className="grid grid-cols-3 gap-8">
+          <div className="mb-20 pb-16 border-b border-subtle">
+            <h5 className="mb-8">Engagement</h5>
+            <div className="grid grid-cols-3 gap-12">
               <div>
                 <p className="text-label mb-2">Opens</p>
-                <p className="text-3xl font-semibold">{company.opens}</p>
+                <p className="text-3xl font-bold">{company.opens}</p>
               </div>
               <div>
                 <p className="text-label mb-2">Clicks</p>
-                <p className="text-3xl font-semibold">{company.clicks}</p>
+                <p className="text-3xl font-bold">{company.clicks}</p>
               </div>
               <div>
                 <p className="text-label mb-2">Click Rate</p>
-                <p className="text-3xl font-semibold">
+                <p className="text-3xl font-bold">
                   {company.opens > 0
                     ? Math.round((company.clicks / company.opens) * 100)
-                    : 0}%
+                    : 0}
+                  %
                 </p>
               </div>
             </div>
           </div>
         )}
 
-        {/* ACTION (Single Clear Decision) */}
+        {/* NEXT STEP: What should operator do? */}
         <div>
           {company.outreachStatus === "not_sent" && (
             <button
@@ -257,22 +261,27 @@ export default function CompanyPage() {
               disabled={isLoading}
               className="btn-primary py-4 px-8 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Sending..." : "Send Email to " + company.name.split(' ')[0]}
+              {isLoading
+                ? "Sending..."
+                : `Send Email to ${company.name.split(" ")[0]}`}
             </button>
           )}
 
-          {company.outreachStatus !== "not_sent" && company.outreachStatus !== "replied" && (
-            <button
-              onClick={handleRecordReply}
-              className="btn-secondary py-4 px-8 text-lg font-semibold"
-            >
-              Mark as Replied
-            </button>
-          )}
+          {company.outreachStatus !== "not_sent" &&
+            company.outreachStatus !== "replied" && (
+              <button
+                onClick={handleRecordReply}
+                className="btn-secondary py-4 px-8 text-lg font-semibold"
+              >
+                Mark as Replied
+              </button>
+            )}
 
           {company.outreachStatus === "replied" && (
-            <div className="text-center py-8 bg-surface rounded-lg">
-              <p className="text-base font-semibold text-navy">Prospect replied. Next: Schedule call.</p>
+            <div className="text-center py-8 bg-white border border-subtle rounded-lg">
+              <p className="text-base font-semibold">
+                Prospect replied. Next: Schedule call.
+              </p>
             </div>
           )}
         </div>
