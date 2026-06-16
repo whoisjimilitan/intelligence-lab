@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getEmailRecord, sendEmail, recordEmailOpen, recordEmailClick, recordEmailReply } from "@/lib/emailTracking";
 
 interface CompanyData {
   id: string;
@@ -20,7 +21,6 @@ interface CompanyData {
   clicks: number;
 }
 
-// Mock company data
 const MOCK_COMPANY: CompanyData = {
   id: "comp-001",
   name: "Morrison's Pharmacy (M1)",
@@ -59,21 +59,80 @@ P.S. We help 30+ pharmacies across the UK with this exact challenge.`;
 
 export default function CompanyPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const companyId = searchParams.get("id");
 
   const [company, setCompany] = useState<CompanyData>(MOCK_COMPANY);
-  const [outreachSent, setOutreachSent] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSendOutreach = () => {
-    setCompany({
-      ...company,
-      outreachStatus: "sent",
-      emailSentAt: new Date().toLocaleString(),
-    });
-    setOutreachSent(true);
-    // In a real system, this would send the email
+  // Load email tracking data on mount
+  useEffect(() => {
+    const emailRecord = getEmailRecord(MOCK_COMPANY.id);
+    if (emailRecord) {
+      setCompany((prev) => ({
+        ...prev,
+        outreachStatus: emailRecord.status as any,
+        emailSentAt: emailRecord.sentAt,
+        opens: emailRecord.openCount,
+        clicks: emailRecord.clickCount,
+      }));
+    }
+  }, []);
+
+  const handleSendOutreach = async () => {
+    setIsLoading(true);
+    try {
+      // Simulate sending email
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // Record in email tracking system
+      const emailRecord = sendEmail(
+        MOCK_COMPANY.id,
+        MOCK_COMPANY.name,
+        MOCK_COMPANY.email,
+        MOCK_COMPANY.pressure
+      );
+
+      setCompany((prev) => ({
+        ...prev,
+        outreachStatus: "sent",
+        emailSentAt: new Date().toLocaleString(),
+        opens: 0,
+        clicks: 0,
+      }));
+
+      // Simulate engagement (for demo purposes)
+      setTimeout(() => {
+        recordEmailOpen(MOCK_COMPANY.id);
+        setCompany((prev) => ({
+          ...prev,
+          outreachStatus: "opened",
+          opens: 1,
+        }));
+      }, 2000);
+
+      setTimeout(() => {
+        recordEmailClick(MOCK_COMPANY.id);
+        setCompany((prev) => ({
+          ...prev,
+          outreachStatus: "clicked",
+          clicks: 1,
+        }));
+      }, 5000);
+    } catch (error) {
+      console.error("Error sending email:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRecordReply = () => {
+    const emailRecord = recordEmailReply(MOCK_COMPANY.id);
+    if (emailRecord) {
+      setCompany((prev) => ({
+        ...prev,
+        outreachStatus: "replied",
+      }));
+    }
   };
 
   const getStatusLabel = (status: string) => {
@@ -209,9 +268,19 @@ export default function CompanyPage() {
                 {company.outreachStatus === "not_sent" && (
                   <button
                     onClick={handleSendOutreach}
-                    className="w-full btn-primary mt-4"
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors disabled:opacity-50"
                   >
-                    Send Outreach Email
+                    {isLoading ? "Sending..." : "Send Outreach Email"}
+                  </button>
+                )}
+
+                {company.outreachStatus !== "not_sent" && company.outreachStatus !== "replied" && (
+                  <button
+                    onClick={handleRecordReply}
+                    className="w-full px-4 py-3 bg-surface text-navy font-semibold rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Mark as Replied
                   </button>
                 )}
               </div>
@@ -324,10 +393,18 @@ export default function CompanyPage() {
                       Suggested Next Steps
                     </div>
                     <ul className="text-sm text-navy space-y-2">
-                      {company.opens === 0 && <li>→ Follow up in 48 hours if not opened</li>}
-                      {company.opens > 0 && company.clicks === 0 && <li>→ Call to discuss if no click within 72 hours</li>}
-                      {company.clicks > 0 && company.outreachStatus !== "replied" && <li>→ Schedule call to discuss solution</li>}
-                      {company.outreachStatus === "replied" && <li>→ Move to proposal stage</li>}
+                      {company.opens === 0 && (
+                        <li>→ Follow up in 48 hours if not opened</li>
+                      )}
+                      {company.opens > 0 && company.clicks === 0 && (
+                        <li>→ Send alternative message or call if no click within 72 hours</li>
+                      )}
+                      {company.clicks > 0 && company.outreachStatus !== "replied" && (
+                        <li>→ Schedule call to discuss solution</li>
+                      )}
+                      {company.outreachStatus === "replied" && (
+                        <li>→ Move to proposal stage</li>
+                      )}
                     </ul>
                   </div>
                 </div>

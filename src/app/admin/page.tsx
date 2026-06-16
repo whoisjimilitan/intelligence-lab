@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { getEmailEngagementStats } from "@/lib/emailTracking";
 
 interface PipelineData {
   pressureType: string;
@@ -63,18 +65,27 @@ const MOCK_PIPELINE: PipelineData[] = [
 
 export default function AdminPage() {
   const router = useRouter();
+  const [emailStats, setEmailStats] = useState<any>(null);
 
+  useEffect(() => {
+    const stats = getEmailEngagementStats();
+    setEmailStats(stats);
+  }, []);
+
+  // Mock pipeline data (kept for pressure type breakdown)
   const totalDiscovered = MOCK_PIPELINE.reduce((sum, p) => sum + p.discovered, 0);
   const totalQualified = MOCK_PIPELINE.reduce((sum, p) => sum + p.qualified, 0);
-  const totalSent = MOCK_PIPELINE.reduce((sum, p) => sum + p.sent, 0);
-  const totalOpened = MOCK_PIPELINE.reduce((sum, p) => sum + p.opened, 0);
-  const totalReplied = MOCK_PIPELINE.reduce((sum, p) => sum + p.replied, 0);
-  const totalConverted = MOCK_PIPELINE.reduce((sum, p) => sum + p.converted, 0);
-  const totalRevenue = MOCK_PIPELINE.reduce((sum, p) => sum + p.totalValue, 0);
 
-  const conversionRate = totalSent > 0 ? ((totalConverted / totalSent) * 100).toFixed(1) : "0";
-  const openRate = totalSent > 0 ? ((totalOpened / totalSent) * 100).toFixed(1) : "0";
-  const replyRate = totalSent > 0 ? ((totalReplied / totalSent) * 100).toFixed(1) : "0";
+  // Real email stats or defaults
+  const totalSent = emailStats?.totalSent || 0;
+  const totalOpened = emailStats?.opened || 0;
+  const totalReplied = emailStats?.replied || 0;
+  const totalConverted = emailStats?.replied || 0; // Use replies as proxy for conversions in Phase 1
+  const totalRevenue = totalConverted * 1400; // Assume £1400 avg deal size
+
+  const conversionRate = emailStats?.clickRate || "0";
+  const openRate = emailStats?.openRate || "0";
+  const replyRate = emailStats?.replyRate || "0";
 
   return (
     <div className="min-h-screen bg-white">
