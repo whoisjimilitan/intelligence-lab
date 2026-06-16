@@ -2,35 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-navy antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    @apply text-brand hover:text-brand-dark transition-colors;
+  }
+
+  /* Typography System */
+  h1 {
+    @apply font-display text-5xl leading-tight font-700 tracking-tight;
+  }
+
+  h2 {
+    @apply font-display text-4xl leading-tight font-600;
+  }
+
+  h3 {
+    @apply font-display text-2xl leading-snug font-600;
+  }
+
+  h4 {
+    @apply font-sans text-lg font-600 tracking-tight;
+  }
+
+  h5 {
+    @apply font-sans text-base font-600 uppercase tracking-wide text-muted;
+  }
+
+  p {
+    @apply font-sans text-base leading-relaxed;
+  }
+
+  /* Buttons */
+  button {
+    @apply font-sans transition-colors;
+  }
+
+  /* Forms */
+  input,
+  select,
+  textarea {
+    @apply font-sans;
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Component Styles */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-brand text-white font-medium rounded-lg hover:bg-brand-dark transition-colors;
+  }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  .btn-secondary {
+    @apply px-6 py-3 bg-surface text-navy font-medium rounded-lg hover:bg-gray-200 transition-colors;
+  }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent;
+  }
 
-button {
-  font-family: inherit;
-}
+  .card {
+    @apply bg-surface rounded-lg border border-gray-200 p-6;
+  }
 
-input,
-select,
-textarea {
-  font-family: inherit;
+  .card-premium {
+    @apply bg-white rounded-lg border border-gray-200 p-8 shadow-sm;
+  }
+
+  .text-muted-label {
+    @apply text-xs font-sans font-600 uppercase tracking-wide text-muted;
+  }
 }

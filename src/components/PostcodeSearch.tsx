@@ -23,9 +23,9 @@ export default function PostcodeSearch({
 
   return (
     <div className="w-full max-w-md">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="postcode" className="block text-sm font-medium mb-2">
+          <label htmlFor="postcode" className="text-muted-label mb-3 block">
             Postcode
           </label>
           <input
@@ -33,26 +33,26 @@ export default function PostcodeSearch({
             type="text"
             value={postcode}
             onChange={(e) => setPostcode(e.target.value)}
-            placeholder="Enter postcode (e.g., M1 1AA)"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="M1 1AA"
+            className="input-field"
             disabled={isLoading}
           />
         </div>
 
         <div>
-          <label htmlFor="radius" className="block text-sm font-medium mb-2">
-            Search Radius (miles)
+          <label htmlFor="radius" className="text-muted-label mb-3 block">
+            Search Radius
           </label>
           <select
             id="radius"
             value={radius}
             onChange={(e) => setRadius(Number(e.target.value))}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input-field"
             disabled={isLoading}
           >
             <option value={1}>1 mile</option>
             <option value={3}>3 miles</option>
-            <option value={5}>5 miles</option>
+            <option value={5}>5 miles (default)</option>
             <option value={10}>10 miles</option>
             <option value={15}>15 miles</option>
           </select>
@@ -61,9 +61,9 @@ export default function PostcodeSearch({
         <button
           type="submit"
           disabled={isLoading || !postcode.trim()}
-          className="w-full px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? "Scanning Market..." : "Search Market"}
+          {isLoading ? "Scanning Market..." : "Scan Market"}
         </button>
       </form>
     </div>

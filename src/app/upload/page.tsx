@@ -50,30 +50,31 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-6xl mx-auto px-4 py-12">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-6xl mx-auto px-6 py-20">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-12">
           <button
             onClick={() => router.push("/")}
-            className="text-blue-600 hover:text-blue-700 font-medium mb-6"
+            className="text-brand hover:text-brand-dark text-sm font-medium mb-6 transition-colors"
           >
-            ← Back to Search
+            ← Back to search
           </button>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            CSV Upload Analysis
+          <h1 className="font-display text-5xl leading-tight text-navy mb-4">
+            Upload & Analyze
           </h1>
-          <p className="text-lg text-gray-700">
-            Upload a CSV file with business data to analyze market opportunities
+          <p className="text-muted text-lg">
+            Provide your own business data. We'll identify market opportunities
+            within your dataset.
           </p>
         </div>
 
         {/* Upload Form */}
         {!uploadPerformed && (
-          <div className="bg-white rounded-lg border border-gray-300 p-8 mb-12 max-w-2xl">
-            <form onSubmit={handleUpload} className="space-y-6">
+          <div className="card-premium max-w-2xl mb-12">
+            <form onSubmit={handleUpload} className="space-y-8">
               <div>
-                <label htmlFor="csv-file" className="block text-sm font-medium mb-2">
+                <label htmlFor="csv-file" className="text-muted-label mb-3 block">
                   CSV File
                 </label>
                 <input
@@ -81,16 +82,16 @@ export default function UploadPage() {
                   type="file"
                   accept=".csv"
                   onChange={handleFileChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="input-field"
                   disabled={isLoading}
                 />
-                <p className="text-xs text-gray-600 mt-2">
+                <p className="text-xs text-muted mt-3">
                   Expected columns: business name, industry, postcode
                 </p>
               </div>
 
               <div>
-                <label htmlFor="postcode" className="block text-sm font-medium mb-2">
+                <label htmlFor="postcode" className="text-muted-label mb-3 block">
                   Postcode
                 </label>
                 <input
@@ -98,8 +99,8 @@ export default function UploadPage() {
                   type="text"
                   value={postcode}
                   onChange={(e) => setPostcode(e.target.value)}
-                  placeholder="Enter postcode (e.g., M1 1AA)"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="M1 1AA"
+                  className="input-field"
                   disabled={isLoading}
                 />
               </div>
@@ -107,9 +108,9 @@ export default function UploadPage() {
               <button
                 type="submit"
                 disabled={isLoading || !file || !postcode.trim()}
-                className="w-full px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Analyzing..." : "Analyze CSV"}
+                {isLoading ? "Analyzing..." : "Analyze"}
               </button>
             </form>
           </div>
@@ -118,13 +119,14 @@ export default function UploadPage() {
         {/* Results */}
         {uploadPerformed && (
           <div>
-            <div className="mb-6 flex justify-between items-center">
+            <div className="mb-12 flex justify-between items-start">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                <h2 className="font-display text-4xl text-navy mb-2">
                   Analysis Results
                 </h2>
-                <p className="text-gray-700">
-                  Found {opportunities.length} opportunity clusters from your CSV
+                <p className="text-muted">
+                  {opportunities.length}{" "}
+                  {opportunities.length === 1 ? "opportunity" : "opportunities"} identified from your data
                 </p>
               </div>
               <button
@@ -134,14 +136,14 @@ export default function UploadPage() {
                   setPostcode("");
                   setOpportunities([]);
                 }}
-                className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700"
+                className="btn-primary text-sm"
               >
                 Upload Another
               </button>
             </div>
 
             {opportunities.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
                 {opportunities.map((opp, idx) => (
                   <div
                     key={idx}
@@ -156,9 +158,10 @@ export default function UploadPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 bg-white rounded-lg border border-gray-300">
-                <p className="text-gray-600 text-lg">
-                  No opportunities found in your CSV data.
+              <div className="card-premium text-center py-16">
+                <h3 className="font-display text-2xl text-navy mb-2">No opportunities</h3>
+                <p className="text-muted">
+                  No pressure clusters identified in your data.
                 </p>
               </div>
             )}
