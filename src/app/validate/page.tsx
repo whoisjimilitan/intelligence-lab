@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { PRESSURE_TAXONOMY } from "@/engines/pressureTaxonomy";
 
 interface ValidationGate {
   name: string;
