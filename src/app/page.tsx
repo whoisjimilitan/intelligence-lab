@@ -37,84 +37,74 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="container-max section-spacing">
-        {/* Header */}
-        <div className="mb-20 flex justify-between items-start">
-          <div className="flex-1">
-            <h5 className="mb-6">Decision System</h5>
-            {searchPerformed ? (
-              <div>
-                <h2>Market: {lastPostcode}</h2>
-                <p className="mt-4 text-base text-muted max-w-2xl">
-                  Opportunities ranked by probability. ACT NOW requires immediate engagement. WATCH has potential but lower confidence.
-                </p>
-              </div>
-            ) : (
-              <div>
-                <h1>Discover Operational Friction.</h1>
-                <p className="mt-6 text-lg text-muted max-w-3xl leading-relaxed">
-                  Intelligence Lab identifies businesses in your market experiencing pressures Saint & Story solves. Qualification happens before outreach.
-                </p>
-              </div>
-            )}
-          </div>
-          {!searchPerformed && (
-            <div className="text-right">
-              <a href="/admin" className="text-sm font-semibold text-brand hover:text-blue-700">
-                Pipeline →
-              </a>
-            </div>
-          )}
-        </div>
-
+        {/* Operator Task: ONE QUESTION */}
         {!searchPerformed ? (
           <>
-            {/* Search */}
-            <div className="mb-24">
+            {/* QUESTION: What market should I scan? */}
+            <div className="mb-20">
+              <h5 className="mb-4">Market Scanner</h5>
+              <h1 className="mb-8">Find opportunities by location.</h1>
+              <p className="text-base text-muted mb-12 max-w-2xl leading-relaxed">
+                Search by postcode. Intelligence Lab detects businesses experiencing operational pressures. Results ranked by likelihood of engagement.
+              </p>
               <PostcodeSearch onSearch={handleSearch} isLoading={isLoading} />
             </div>
 
-            {/* Process */}
-            <div className="border-t border-subtle pt-20">
-              <h5 className="mb-12">How It Works</h5>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
-                {[
-                  { step: "Detect", desc: "Scan by postcode. Identify pressures by industry." },
-                  { step: "Qualify", desc: "Test psychological, commercial, logistics fit." },
-                  { step: "Verify", desc: "Stress test messages. Validate safety. Rank by probability." },
-                  { step: "Act", desc: "Send recognition outreach. Track engagement. Learn." },
-                ].map((item, idx) => (
-                  <div key={idx}>
-                    <h4 className="text-brand mb-3">{item.step}</h4>
-                    <p className="text-sm leading-relaxed text-muted">{item.desc}</p>
-                  </div>
-                ))}
+            {/* Value Proposition - Why use this? */}
+            <div className="border-t border-subtle pt-16">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div>
+                  <h4 className="text-brand mb-2">Detection</h4>
+                  <p className="text-sm text-muted">Identifies pressure types across industries. No guesswork.</p>
+                </div>
+                <div>
+                  <h4 className="text-brand mb-2">Qualification</h4>
+                  <p className="text-sm text-muted">Tests psychological, commercial, logistics fit. Safe to surface.</p>
+                </div>
+                <div>
+                  <h4 className="text-brand mb-2">Reasoning</h4>
+                  <p className="text-sm text-muted">Shows WHY each opportunity matters. Build trust in recommendations.</p>
+                </div>
               </div>
             </div>
           </>
         ) : (
           <>
-            {/* Results Header */}
-            <div className="mb-16 pb-16 border-b border-subtle">
-              <div className="grid grid-cols-3 gap-12">
+            {/* OPERATOR'S TASK: Which businesses should I contact? */}
+
+            {/* The Answer (Quick Stats) */}
+            <div className="mb-16 pb-12 border-b border-subtle">
+              <h5 className="mb-4">Results for {lastPostcode}</h5>
+              <p className="text-base text-muted mb-8">
+                Found {opportunities.length} opportunities. {actNow.length} ready to contact now.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div>
-                  <h5 className="mb-3">Total Opportunities</h5>
                   <p className="text-metric">{opportunities.length}</p>
+                  <p className="text-label mt-2">Total</p>
                 </div>
                 <div>
-                  <h5 className="mb-3">Act Now</h5>
                   <p className="text-metric" style={{ color: 'var(--color-brand)' }}>{actNow.length}</p>
+                  <p className="text-label mt-2">Ready Now</p>
                 </div>
                 <div>
-                  <h5 className="mb-3">Watch</h5>
                   <p className="text-metric text-muted">{watch.length}</p>
+                  <p className="text-label mt-2">Watch</p>
+                </div>
+                <div>
+                  <p className="text-metric">{opportunities.length > 0 ? Math.round((actNow.length / opportunities.length) * 100) : 0}%</p>
+                  <p className="text-label mt-2">Qualified</p>
                 </div>
               </div>
             </div>
 
-            {/* ACT NOW */}
+            {/* ACT NOW - Primary Focus */}
             {actNow.length > 0 && (
-              <div className="mb-20">
-                <h5 className="mb-8">Highest Priority</h5>
+              <div className="mb-24">
+                <div className="mb-8">
+                  <h3>Contact These Now</h3>
+                  <p className="text-base text-muted mt-2">Highest probability of engagement. Risk-tested and verified.</p>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {actNow.map((opp, idx) => (
                     <OpportunityCard
@@ -129,10 +119,13 @@ export default function HomePage() {
               </div>
             )}
 
-            {/* WATCH */}
+            {/* WATCH - Secondary (Lower Confidence) */}
             {watch.length > 0 && (
               <div className="opacity-60">
-                <h5 className="mb-8">Watch (Lower Confidence)</h5>
+                <div className="mb-8">
+                  <h3>Monitor These</h3>
+                  <p className="text-base text-muted mt-2">Potential but lower confidence. Test before scaling.</p>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {watch.map((opp, idx) => (
                     <OpportunityCard
@@ -146,6 +139,19 @@ export default function HomePage() {
                 </div>
               </div>
             )}
+
+            {/* Back to Search */}
+            <div className="mt-20 pt-16 border-t border-subtle text-center">
+              <button
+                onClick={() => {
+                  setSearchPerformed(false);
+                  setOpportunities([]);
+                }}
+                className="btn-ghost"
+              >
+                ← Search Another Market
+              </button>
+            </div>
           </>
         )}
       </div>

@@ -64,7 +64,6 @@ export default function CompanyPage() {
   const [showEmail, setShowEmail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Load email tracking data on mount
   useEffect(() => {
     const emailRecord = getEmailRecord(MOCK_COMPANY.id);
     if (emailRecord) {
@@ -81,10 +80,8 @@ export default function CompanyPage() {
   const handleSendOutreach = async () => {
     setIsLoading(true);
     try {
-      // Simulate sending email
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      // Record in email tracking system
       sendEmail(
         MOCK_COMPANY.id,
         MOCK_COMPANY.name,
@@ -100,7 +97,6 @@ export default function CompanyPage() {
         clicks: 0,
       }));
 
-      // Simulate engagement (for demo purposes)
       setTimeout(() => {
         recordEmailOpen(MOCK_COMPANY.id);
         setCompany((prev) => ({
@@ -147,274 +143,139 @@ export default function CompanyPage() {
     return labels[status] || status;
   };
 
-  const getStatusColor = (status: string) => {
-    if (status === "not_sent") return "text-gray-600";
-    if (status === "sent") return "text-blue-600";
-    if (status === "opened") return "text-blue-700";
-    if (status === "clicked") return "text-green-600";
-    if (status === "replied") return "text-green-700";
-    if (status === "converted") return "text-green-800";
-    return "text-gray-600";
-  };
-
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-20">
-        {/* Header */}
-        <div className="mb-12">
-          <button
-            onClick={() => router.back()}
-            className="text-brand hover:text-brand-dark text-sm font-medium mb-4 transition-colors"
-          >
-            ← Back
-          </button>
-          <h1 className="font-display text-5xl leading-tight text-navy mb-4">
-            {company.name}
-          </h1>
-          <div className="flex items-center gap-6">
+      <div className="container-max section-spacing">
+        {/* Back */}
+        <button
+          onClick={() => router.back()}
+          className="btn-ghost mb-12"
+        >
+          ← Back
+        </button>
+
+        {/* OPERATOR QUESTION: Should I contact this business? */}
+        <div className="mb-16 pb-16 border-b border-subtle">
+          <h1 className="mb-4">{company.name}</h1>
+          <p className="text-base text-muted mb-8">{company.industry} • {company.postcode}</p>
+
+          {/* WHY (The Reasoning) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
-                Industry
-              </div>
-              <p className="text-navy font-semibold">{company.industry}</p>
+              <h5 className="mb-2">Operational Pressure</h5>
+              <p className="text-base font-semibold">{company.pressure}</p>
             </div>
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
-                Pressure
-              </div>
-              <p className="text-navy font-semibold">{company.pressure}</p>
-            </div>
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-muted">
-                Buying Probability
-              </div>
-              <p className="font-display text-2xl font-semibold text-navy">
+              <h5 className="mb-2">Engagement Probability</h5>
+              <p className="text-3xl font-semibold" style={{ color: 'var(--color-brand)' }}>
                 {Math.round(company.buyingProbability * 100)}%
+              </p>
+              <p className="text-sm text-muted mt-2">Based on pressure signals</p>
+            </div>
+            <div>
+              <h5 className="mb-2">Contact Status</h5>
+              <p className="text-base font-semibold capitalize">{getStatusLabel(company.outreachStatus)}</p>
+              {company.emailSentAt && (
+                <p className="text-sm text-muted mt-2">{company.emailSentAt}</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* THE MESSAGE (What will they see?) */}
+        <div className="mb-16 pb-16 border-b border-subtle">
+          <h3 className="mb-6">Message</h3>
+          <div className="bg-surface rounded-lg p-8">
+            <div className="bg-white rounded-lg p-6 border border-subtle">
+              <p className="text-sm leading-relaxed whitespace-pre-wrap text-navy">
+                {RECOGNITION_EMAIL.split('\n\n')[0]}
+              </p>
+              <p className="text-sm leading-relaxed mt-6 whitespace-pre-wrap text-navy">
+                {RECOGNITION_EMAIL.split('\n\n').slice(1, -1).join('\n\n')}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Contact & Outreach */}
-          <div className="lg:col-span-1 space-y-8">
-            {/* Contact Details */}
-            <div className="border border-gray-200 rounded-lg p-6">
-              <h3 className="font-display text-lg font-semibold text-navy mb-4">
-                Contact Details
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-1">
-                    Email
-                  </div>
-                  <p className="text-navy break-all">{company.email}</p>
-                </div>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-1">
-                    Phone
-                  </div>
-                  <p className="text-navy">{company.phone}</p>
-                </div>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-1">
-                    Postcode
-                  </div>
-                  <p className="text-navy">{company.postcode}</p>
-                </div>
-                {company.website && (
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-1">
-                      Website
-                    </div>
-                    <a
-                      href={`https://${company.website}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-brand hover:text-brand-dark"
-                    >
-                      {company.website}
-                    </a>
-                  </div>
-                )}
-              </div>
+        {/* CONTACT DETAILS (Secondary Info) */}
+        <div className="mb-16 pb-16 border-b border-subtle">
+          <h5 className="mb-4">Contact Information</h5>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <p className="text-label mb-2">Email</p>
+              <p className="text-base text-navy">{company.email}</p>
             </div>
-
-            {/* Outreach Status */}
-            <div className="border border-gray-200 rounded-lg p-6">
-              <h3 className="font-display text-lg font-semibold text-navy mb-4">
-                Outreach Status
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                    Current Status
-                  </div>
-                  <p className={`font-display text-2xl font-semibold ${getStatusColor(company.outreachStatus)}`}>
-                    {getStatusLabel(company.outreachStatus)}
-                  </p>
-                </div>
-
-                {company.emailSentAt && (
-                  <div className="border-t border-gray-100 pt-4">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                      Email Sent
-                    </div>
-                    <p className="text-navy">{company.emailSentAt}</p>
-                  </div>
-                )}
-
-                {company.outreachStatus === "not_sent" && (
-                  <button
-                    onClick={handleSendOutreach}
-                    disabled={isLoading}
-                    className="w-full px-4 py-3 bg-brand text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors disabled:opacity-50"
-                  >
-                    {isLoading ? "Sending..." : "Send Outreach Email"}
-                  </button>
-                )}
-
-                {company.outreachStatus !== "not_sent" && company.outreachStatus !== "replied" && (
-                  <button
-                    onClick={handleRecordReply}
-                    className="w-full px-4 py-3 bg-surface text-navy font-semibold rounded-lg hover:bg-gray-200 transition-colors"
-                  >
-                    Mark as Replied
-                  </button>
-                )}
-              </div>
+            <div>
+              <p className="text-label mb-2">Phone</p>
+              <p className="text-base text-navy">{company.phone}</p>
             </div>
-          </div>
-
-          {/* Right Column - Email & Engagement */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Email Template */}
-            <div className="border border-gray-200 rounded-lg p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-display text-lg font-semibold text-navy">
-                  Recognition Email
-                </h3>
-                <button
-                  onClick={() => setShowEmail(!showEmail)}
-                  className="text-brand hover:text-brand-dark text-sm font-medium"
+            {company.website && (
+              <div>
+                <p className="text-label mb-2">Website</p>
+                <a
+                  href={`https://${company.website}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand hover:text-blue-700 text-base"
                 >
-                  {showEmail ? "Hide" : "Show"}
-                </button>
+                  {company.website}
+                </a>
               </div>
+            )}
+          </div>
+        </div>
 
-              {showEmail && (
-                <div className="bg-surface rounded-lg p-6 text-sm text-navy leading-relaxed whitespace-pre-wrap">
-                  {RECOGNITION_EMAIL}
-                </div>
-              )}
-            </div>
-
-            {/* Engagement Monitor */}
-            <div className="border border-gray-200 rounded-lg p-6">
-              <h3 className="font-display text-lg font-semibold text-navy mb-6">
-                Engagement Monitor
-              </h3>
-
-              {company.outreachStatus !== "not_sent" ? (
-                <div className="space-y-6">
-                  {/* Engagement Timeline */}
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-4">
-                      Activity
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-4 pb-3 border-b border-gray-100">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full flex-shrink-0"></div>
-                        <div className="flex-1">
-                          <p className="text-navy font-semibold">Email Sent</p>
-                          <p className="text-xs text-muted">{company.emailSentAt}</p>
-                        </div>
-                      </div>
-
-                      {company.opens > 0 && (
-                        <div className="flex items-center gap-4 pb-3 border-b border-gray-100">
-                          <div className="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
-                          <div className="flex-1">
-                            <p className="text-navy font-semibold">Email Opened</p>
-                            <p className="text-xs text-muted">{company.opens} time{company.opens !== 1 ? "s" : ""}</p>
-                          </div>
-                        </div>
-                      )}
-
-                      {company.clicks > 0 && (
-                        <div className="flex items-center gap-4">
-                          <div className="w-3 h-3 bg-green-600 rounded-full flex-shrink-0"></div>
-                          <div className="flex-1">
-                            <p className="text-navy font-semibold">Link Clicked</p>
-                            <p className="text-xs text-muted">{company.clicks} click{company.clicks !== 1 ? "s" : ""}</p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Engagement Stats */}
-                  <div className="border-t border-gray-100 pt-6">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                          Opens
-                        </div>
-                        <p className="font-display text-2xl font-semibold text-navy">
-                          {company.opens}
-                        </p>
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                          Clicks
-                        </div>
-                        <p className="font-display text-2xl font-semibold text-navy">
-                          {company.clicks}
-                        </p>
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                          CTR
-                        </div>
-                        <p className="font-display text-2xl font-semibold text-navy">
-                          {company.opens > 0
-                            ? Math.round((company.clicks / company.opens) * 100)
-                            : 0}
-                          %
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Next Steps */}
-                  <div className="border-t border-gray-100 pt-6 bg-surface rounded-lg p-4">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
-                      Suggested Next Steps
-                    </div>
-                    <ul className="text-sm text-navy space-y-2">
-                      {company.opens === 0 && (
-                        <li>→ Follow up in 48 hours if not opened</li>
-                      )}
-                      {company.opens > 0 && company.clicks === 0 && (
-                        <li>→ Send alternative message or call if no click within 72 hours</li>
-                      )}
-                      {company.clicks > 0 && company.outreachStatus !== "replied" && (
-                        <li>→ Schedule call to discuss solution</li>
-                      )}
-                      {company.outreachStatus === "replied" && (
-                        <li>→ Move to proposal stage</li>
-                      )}
-                    </ul>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-muted">Send outreach email to begin tracking engagement</p>
-                </div>
-              )}
+        {/* ENGAGEMENT (If sent) */}
+        {company.outreachStatus !== "not_sent" && (
+          <div className="mb-16 pb-16 border-b border-subtle">
+            <h3 className="mb-6">Engagement</h3>
+            <div className="grid grid-cols-3 gap-8">
+              <div>
+                <p className="text-label mb-2">Opens</p>
+                <p className="text-3xl font-semibold">{company.opens}</p>
+              </div>
+              <div>
+                <p className="text-label mb-2">Clicks</p>
+                <p className="text-3xl font-semibold">{company.clicks}</p>
+              </div>
+              <div>
+                <p className="text-label mb-2">Click Rate</p>
+                <p className="text-3xl font-semibold">
+                  {company.opens > 0
+                    ? Math.round((company.clicks / company.opens) * 100)
+                    : 0}%
+                </p>
+              </div>
             </div>
           </div>
+        )}
+
+        {/* ACTION (Single Clear Decision) */}
+        <div>
+          {company.outreachStatus === "not_sent" && (
+            <button
+              onClick={handleSendOutreach}
+              disabled={isLoading}
+              className="btn-primary py-4 px-8 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? "Sending..." : "Send Email to " + company.name.split(' ')[0]}
+            </button>
+          )}
+
+          {company.outreachStatus !== "not_sent" && company.outreachStatus !== "replied" && (
+            <button
+              onClick={handleRecordReply}
+              className="btn-secondary py-4 px-8 text-lg font-semibold"
+            >
+              Mark as Replied
+            </button>
+          )}
+
+          {company.outreachStatus === "replied" && (
+            <div className="text-center py-8 bg-surface rounded-lg">
+              <p className="text-base font-semibold text-navy">Prospect replied. Next: Schedule call.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
