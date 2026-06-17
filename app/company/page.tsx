@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   sendEmail,
@@ -8,7 +8,6 @@ import {
   recordEmailClick,
   recordEmailReply,
 } from "@/lib/email-tracking";
-import { orchestrateMarketAnalysis } from "@/lib/opportunityOrchestrator";
 
 interface CompanyData {
   id: string;
@@ -45,14 +44,13 @@ Sound like your morning?
 
 [YES] [NO]`;
 
-export default function CompanyPage() {
+function CompanyPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const companyName = searchParams.get("name") || "Unknown Business";
 
   const [company, setCompany] = useState<CompanyData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
     // Initialize with sample company data based on name
@@ -92,8 +90,6 @@ export default function CompanyPage() {
             }
           : null
       );
-
-      setEmailSent(true);
 
       // Simulate engagement
       setTimeout(() => {
@@ -287,5 +283,13 @@ export default function CompanyPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CompanyPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CompanyPageContent />
+    </Suspense>
   );
 }
