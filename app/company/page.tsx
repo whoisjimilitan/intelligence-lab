@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
-  getEmailRecord,
   sendEmail,
   recordEmailOpen,
   recordEmailClick,
   recordEmailReply,
-} from "@/lib/emailTracking";
+} from "@/lib/email-tracking";
+import { orchestrateMarketAnalysis } from "@/lib/opportunityOrchestrator";
 
 interface CompanyData {
   id: string;
@@ -33,22 +33,6 @@ interface CompanyData {
   clicks: number;
 }
 
-const MOCK_COMPANY: CompanyData = {
-  id: "comp-001",
-  name: "Morrison's Pharmacy (M1)",
-  industry: "Pharmacy",
-  postcode: "M1 1AA",
-  email: "manager@morrisons-pharm.co.uk",
-  phone: "0161 234 5678",
-  website: "www.morrisons-pharmacy.co.uk",
-  pressure: "Time-Critical Movement",
-  buyingProbability: 0.78,
-  urgencySignal: 0.72,
-  outreachStatus: "not_sent",
-  opens: 0,
-  clicks: 0,
-};
-
 const RECOGNITION_EMAIL = `I need you to answer this honestly:
 
 Some pharmacies in Manchester say prescription orders arrive during 10am rush with tight delivery windows, and courier gaps create customer panic.
@@ -63,58 +47,79 @@ Sound like your morning?
 
 export default function CompanyPage() {
   const router = useRouter();
-  const [company, setCompany] = useState<CompanyData>(MOCK_COMPANY);
+  const searchParams = useSearchParams();
+  const companyName = searchParams.get("name") || "Unknown Business";
+
+  const [company, setCompany] = useState<CompanyData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
-    const emailRecord = getEmailRecord(MOCK_COMPANY.id);
-    if (emailRecord) {
-      setCompany((prev) => ({
-        ...prev,
-        outreachStatus: emailRecord.status as any,
-        emailSentAt: emailRecord.sentAt,
-        opens: emailRecord.openCount,
-        clicks: emailRecord.clickCount,
-      }));
-    }
-  }, []);
+    // Initialize with sample company data based on name
+    const sampleCompany: CompanyData = {
+      id: `comp-${Date.now()}`,
+      name: companyName,
+      industry: "Pharmacy",
+      postcode: "M1 1AA",
+      email: `manager@${companyName.toLowerCase().replace(/\s/g, "")}.co.uk`,
+      phone: "0161 234 5678",
+      website: `www.${companyName.toLowerCase().replace(/\s/g, "")}.co.uk`,
+      pressure: "Time-Critical Movement",
+      buyingProbability: 0.78,
+      urgencySignal: 0.72,
+      outreachStatus: "not_sent",
+      opens: 0,
+      clicks: 0,
+    };
+    setCompany(sampleCompany);
+  }, [companyName]);
 
   const handleSendOutreach = async () => {
+    if (!company) return;
+
     setIsLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
 
-      sendEmail(
-        MOCK_COMPANY.id,
-        MOCK_COMPANY.name,
-        MOCK_COMPANY.email,
-        MOCK_COMPANY.pressure
+      sendEmail(company.id, company.name, company.email, company.pressure);
+
+      setCompany((prev) =>
+        prev
+          ? {
+              ...prev,
+              outreachStatus: "sent",
+              emailSentAt: new Date().toLocaleString(),
+            }
+          : null
       );
 
-      setCompany((prev) => ({
-        ...prev,
-        outreachStatus: "sent",
-        emailSentAt: new Date().toLocaleString(),
-        opens: 0,
-        clicks: 0,
-      }));
+      setEmailSent(true);
 
+      // Simulate engagement
       setTimeout(() => {
-        recordEmailOpen(MOCK_COMPANY.id);
-        setCompany((prev) => ({
-          ...prev,
-          outreachStatus: "opened",
-          opens: 1,
-        }));
+        recordEmailOpen(company.id);
+        setCompany((prev) =>
+          prev
+            ? {
+                ...prev,
+                outreachStatus: "opened",
+                opens: 1,
+              }
+            : null
+        );
       }, 2000);
 
       setTimeout(() => {
-        recordEmailClick(MOCK_COMPANY.id);
-        setCompany((prev) => ({
-          ...prev,
-          outreachStatus: "clicked",
-          clicks: 1,
-        }));
+        recordEmailClick(company.id);
+        setCompany((prev) =>
+          prev
+            ? {
+                ...prev,
+                outreachStatus: "clicked",
+                clicks: 1,
+              }
+            : null
+        );
       }, 5000);
     } catch (error) {
       console.error("Error sending email:", error);
@@ -124,26 +129,25 @@ export default function CompanyPage() {
   };
 
   const handleRecordReply = () => {
-    const emailRecord = recordEmailReply(MOCK_COMPANY.id);
-    if (emailRecord) {
-      setCompany((prev) => ({
-        ...prev,
-        outreachStatus: "replied",
-      }));
-    }
+    if (!company) return;
+    recordEmailReply(company.id);
+    setCompany((prev) =>
+      prev
+        ? {
+            ...prev,
+            outreachStatus: "replied",
+          }
+        : null
+    );
   };
 
-  const getStatusLabel = (status: string) => {
-    const labels: Record<string, string> = {
-      not_sent: "Not Sent",
-      sent: "Sent",
-      opened: "Opened",
-      clicked: "Clicked",
-      replied: "Replied",
-      converted: "Converted",
-    };
-    return labels[status] || status;
-  };
+  if (!company) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -153,34 +157,32 @@ export default function CompanyPage() {
           ← Back
         </button>
 
-        {/* QUESTION: Should I contact this business? */}
+        {/* Company Header */}
         <div className="mb-20 pb-16 border-b border-subtle">
-          <h5 className="mb-6">Opportunity Details</h5>
           <h1>{company.name}</h1>
           <p className="text-base text-muted mt-4">
             {company.industry} • {company.postcode}
           </p>
 
-          {/* Decision Reasoning */}
+          {/* Decision Context */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 mt-16">
             <div>
               <h5 className="mb-4">Detected Pressure</h5>
               <p className="text-lg font-semibold">{company.pressure}</p>
             </div>
             <div>
-              <h5 className="mb-4">Engagement Probability</h5>
+              <h5 className="mb-4">Fit Score</h5>
               <p
                 className="text-4xl font-bold"
                 style={{ color: "var(--color-brand)" }}
               >
                 {Math.round(company.buyingProbability * 100)}%
               </p>
-              <p className="text-sm text-muted mt-2">Based on signals</p>
             </div>
             <div>
               <h5 className="mb-4">Status</h5>
               <p className="text-lg font-semibold capitalize">
-                {getStatusLabel(company.outreachStatus)}
+                {company.outreachStatus === "not_sent" ? "Ready" : company.outreachStatus}
               </p>
               {company.emailSentAt && (
                 <p className="text-sm text-muted mt-2">{company.emailSentAt}</p>
@@ -189,9 +191,9 @@ export default function CompanyPage() {
           </div>
         </div>
 
-        {/* MESSAGE: What they'll see */}
+        {/* Email Preview */}
         <div className="mb-20 pb-16 border-b border-subtle">
-          <h5 className="mb-8">Recognition Email</h5>
+          <h5 className="mb-8">Email to Send</h5>
           <div className="bg-white border border-subtle rounded-lg p-12">
             <p className="text-sm leading-relaxed whitespace-pre-wrap text-navy font-medium">
               {RECOGNITION_EMAIL}
@@ -199,9 +201,9 @@ export default function CompanyPage() {
           </div>
         </div>
 
-        {/* CONTACT INFORMATION */}
+        {/* Contact Details */}
         <div className="mb-20 pb-16 border-b border-subtle">
-          <h5 className="mb-8">Contact Details</h5>
+          <h5 className="mb-8">Contact</h5>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             <div>
               <p className="text-label mb-2">Email</p>
@@ -227,7 +229,7 @@ export default function CompanyPage() {
           </div>
         </div>
 
-        {/* ENGAGEMENT: If sent, show engagement */}
+        {/* Engagement (if sent) */}
         {company.outreachStatus !== "not_sent" && (
           <div className="mb-20 pb-16 border-b border-subtle">
             <h5 className="mb-8">Engagement</h5>
@@ -253,7 +255,7 @@ export default function CompanyPage() {
           </div>
         )}
 
-        {/* NEXT STEP: What should operator do? */}
+        {/* Action */}
         <div>
           {company.outreachStatus === "not_sent" && (
             <button
@@ -261,9 +263,7 @@ export default function CompanyPage() {
               disabled={isLoading}
               className="btn-primary py-4 px-8 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading
-                ? "Sending..."
-                : `Send Email to ${company.name.split(" ")[0]}`}
+              {isLoading ? "Sending..." : `Send Email to ${company.name.split(" ")[0]}`}
             </button>
           )}
 
