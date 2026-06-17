@@ -1,502 +1,553 @@
 # Intelligence Lab System Overview
 
-## What It Is
-
-Intelligence Lab is a B2B decision intelligence system that identifies businesses experiencing operational pressures and generates contextually-specific recognition emails designed to begin the sales conversion process through psychological resonance, not traditional sales messaging.
-
-It's a pressure-centric, operator-focused platform that helps Saint & Story (a UK logistics company specializing in moving things) find and qualify prospects who have unresolved movement/logistics friction.
+**For Saint & Story Operations & Leadership**
 
 ---
 
-## Core Philosophy
+## Executive Summary
 
-**Not: "Here's what we sell."**
-**Is: "I understand your exact Tuesday problem."**
+Intelligence Lab is Saint & Story's intelligent prospecting system. It detects UK businesses experiencing movement/logistics friction, generates personalized recognition emails that make prospects feel understood, and learns which operational pressures convert best.
 
-The system operates on recognition psychology:
-- Prospects don't respond to generic sales pitches
-- They respond when someone describes their exact situation so accurately they feel *understood*
-- Recognition precedes consideration
-- Understanding builds trust before any pitch
+**Core Premise:** Prospects don't respond to "Here's what we move." They respond when you describe their exact Tuesday so accurately they think you've been watching their business.
 
----
-
-## What It Actually Does
-
-### For Operators (Manual Mode)
-1. Operator enters a UK postcode
-2. System detects all businesses in that area
-3. System analyzes each for operational pressures
-4. System qualifies each on fit (psychological, commercial, logistics)
-5. Operator sees a ranked list of "ready to contact" opportunities
-6. Operator clicks one → sees company details + generated email
-7. Operator decides: Send email or skip
-8. System tracks YES/NO responses (opt-in confirmation, not sales commitment)
-9. Operator checks reporting page to see outcomes and next steps
-
-### For Autonomous Mode (Future)
-- 24/7 nightly scan of all UK postcodes
-- Auto-detect + auto-qualify
-- Auto-send recognition emails
-- Same learning loop applies
-
-### For Both
-- Learning: System tracks which pressure types generate YES responses
-- Adaptation: Over time, system improves which pressures to target, which industries convert best
-- Moat: Intelligence about "what actually converts" becomes proprietary advantage
+The system runs in two modes:
+- **Manual:** Operators search postcodes, see qualified prospects, decide who to contact
+- **Autonomous:** Nightly scans of entire UK, auto-detects and sends (future)
 
 ---
 
-## The 46 Operational Pressure Types
+## What Problems Does Intelligence Lab Solve?
 
-System identifies where operational "stuckness" happens across 8 dimensions:
+### Our Problem #1: Lead Generation at Scale
+**Before:** Cold calls, generic emails, low conversion
+**Now:** System detects 10+ qualified prospects per postcode with specific operational pressures
+
+### Our Problem #2: Knowing What To Say
+**Before:** Leaving it to salespeople (inconsistent, generic, not human)
+**Now:** System generates personalized recognition emails based on actual business situation
+
+### Our Problem #3: Understanding What Converts
+**Before:** No feedback loop. Don't know which message types drive YES responses
+**Now:** System learns. Time-Critical Movement might convert at 12%, Capacity Overflow at 8%. Adjust targeting accordingly.
+
+### Our Problem #4: Operator Efficiency
+**Before:** Operators hunt manually, waste time on low-fit prospects
+**Now:** Operators see only qualified prospects ranked by likelihood of engagement
+
+---
+
+## How It Works: The Operator's Day
+
+### Morning: Scan Market
+
+Operator opens Intelligence Lab → enters postcode (e.g., "M1 1AA")
+
+System returns:
+- All businesses in M1 1AA
+- Detected pressure for each (Time-Critical Movement, Capacity Overflow, etc.)
+- Fit score (0-100%)
+- Sorted: "Ready to Contact" first
+
+### Mid-Morning: Make Decisions
+
+Operator clicks "Morrison's Pharmacy" → sees:
+
+**Why This Opportunity:**
+- Detected Pressure: Time-Critical Movement (same-day prescription delivery)
+- Fit Score: 78% (they need us, can afford us, we can serve them)
+- Status: Ready to contact
+
+**The Email We'll Send:**
+```
+I need you to answer this honestly:
+
+Some pharmacies in Manchester say prescription orders arrive 
+during 10am rush with tight delivery windows, and courier gaps 
+create customer panic.
+
+You're probably calling asking "can you get this there by noon?" 
+and scrambling to find coverage.
+
+Some days you solve it. Some days they go to competitors.
+
+Sound like your morning?
+
+[YES] [NO]
+```
+
+**The Company:**
+- Email: manager@morrisons-pharm.co.uk
+- Phone: 0161 234 5678
+- Website: www.morrisons-pharmacy.co.uk
+
+**Decision:** Send or Skip?
+
+Operator: *Clicks [Send Email]*
+
+### Afternoon: Review Performance
+
+Operator checks dashboard:
+
+**This Week's Results:**
+- Emails sent: 47
+- Conversations started (any response): 8
+- Positive responses (YES): 6
+
+**Next Steps:**
+- Follow up on 6 positive responses
+- Scan another market
+
+---
+
+## The 46 Operational Pressures We Target
+
+The system detects pressures in 8 operational dimensions:
 
 ### 1. MONEY STUCKNESS
-- Payment Collection Delays (invoices sit unpaid 60+ days)
-- Financial Visibility (revenue data is always late)
-- Working Capital Constraints (can't afford to stock/produce)
+Businesses can't collect payment fast enough, don't have visibility into P&L, or lack working capital for growth.
+
+- Payment Collection Delays
+- Financial Visibility
+- Working Capital Constraints
 
 ### 2. SERVICE STUCKNESS
-- Capacity Overflow (booked 4 weeks out, turning away customers)
-- Service Quality Inconsistency (QC failures, manual compliance)
-- Geographic Service Gaps (some postcodes are uneconomical)
+Businesses can't deliver service fast enough, quality is inconsistent, or they don't reach all geographies.
+
+- Capacity Overflow (booked 4 weeks out)
+- Service Quality Inconsistency
+- Geographic Service Gaps
 
 ### 3. GROWTH STUCKNESS
-- Customer Acquisition Friction (sales cycle too long)
-- Customer Churn (customers leaving for competitors)
-- Customer Expansion Friction (existing customers not growing)
+Businesses struggle to acquire customers, lose them to competitors, or can't grow existing relationships.
 
-### 4. MOVEMENT STUCKNESS (Saint & Story Core)
-- Time-Critical Movement (same-day delivery failures)
-- Bulk Distribution Coordination (multi-location timing gaps)
-- Reverse Logistics (returns are chaotic)
-- Cross-Location Coordination (inter-factory movement problems)
-- Emergency Response Logistics (dispatch chaos)
+- Customer Acquisition Friction
+- Customer Churn
+- Customer Expansion Friction
+
+### 4. MOVEMENT STUCKNESS (OUR CORE)
+Businesses can't move things fast enough, reliably enough, or at scale.
+
+- Time-Critical Movement (same-day, emergency)
+- Bulk Distribution Coordination (multi-location timing)
+- Reverse Logistics (returns management)
+- Cross-Location Coordination (inter-facility moves)
+- Emergency Response Logistics (dispatch)
 
 ### 5. PRESCRIPTIONS/ORDERS
-- Prescription Processing Delays (manual verification bottlenecks)
-- Order Processing Complexity (custom specs create friction)
-- Compliance Documentation (regulatory paperwork delays)
+Businesses struggle with order processing, verification, or compliance.
+
+- Prescription Processing Delays
+- Order Processing Complexity
+- Compliance Documentation
 
 ### 6. DELIVERIES
-- Delivery Reliability (parts/materials arrive unpredictably)
-- Fragile Goods Handling (damage risk and cost)
-- Proof-of-Delivery Visibility (POD disputes)
+Businesses have unreliable supply chains or can't track deliveries.
+
+- Delivery Reliability
+- Fragile Goods Handling
+- Proof-of-Delivery Visibility
 
 ### 7. APPOINTMENTS
-- Appointment Scheduling Friction (popular staff booked weeks out)
-- No-Show and Cancellation Losses (revenue leaks)
-- Rescheduling Complexity (manual slot management)
+Businesses can't manage schedules, suffer no-shows, or can't handle rescheduling.
+
+- Appointment Scheduling Friction
+- No-Show and Cancellation Losses
+- Rescheduling Complexity
 
 ### 8. CUSTOMER EXPERIENCE
-- Communication Breakdown (feedback gets lost in channels)
-- Visibility and Tracking Gaps (customers don't know order status)
-- Issue Resolution Speed (problems take days to resolve)
-- Feedback Collection and Action (complaints don't drive improvement)
+Businesses don't communicate clearly, customers are lost, or issues take forever to resolve.
 
-Each pressure type has **3-6 industry-specific scenarios** with exact times, numbers, and pain manifestations.
-
-Example (Time-Critical Movement / Lawyer):
-- **Situation:** "Files arrive at your desk with same-day court deadlines. Your courier promises next-day."
-- **Specific Detail:** "So you're calling around at 1:45pm trying to find someone who can guarantee 2pm pickup → courthouse by close of business."
-- **Variability:** "Sometimes it works. Sometimes it doesn't."
-- **Timeframe:** "Tuesday"
+- Communication Breakdown
+- Visibility and Tracking Gaps
+- Issue Resolution Speed
+- Feedback Collection and Action
 
 ---
 
-## How It Works: The Complete Workflow
+## Why This Approach Works
 
-### PHASE 1: DETECTION
+### Traditional Prospecting
+"Here's what we do. You need us? Call us."
+- Generic
+- Interruptive
+- Prospect doesn't feel understood
+- Low response rate
 
-**Input:** Postcode (e.g., "M1 1AA")
+### Intelligence Lab Approach
+"I understand your exact Tuesday problem. Does this sound like you?"
+- Specific
+- Resonant
+- Prospect feels understood before pitch
+- Higher response rate
 
-**Process:**
-1. System finds all businesses in that postcode
-2. Claude agent analyzes each business
-3. Agent identifies top 3 operational pressures
-4. Confidence scoring (0-1 scale)
-5. Signals collection (specific pain indicators)
+### The Psychology
 
-**Output:** List of businesses with detected pressures ranked by confidence
+When a prospect receives a recognition email, three things happen:
 
-### PHASE 2: TESTING (Qualification)
+1. **Recognition:** "Wait, how do they know this about us?"
+2. **Relief:** "Finally, someone gets it."
+3. **Trust:** "This company understands our world."
 
-**Three Fit Tests:**
+Then they see the YES/NO buttons:
 
-1. **Psychological Fit:** Does this business recognize themselves in the pressure description?
-   - Would they find the email resonant or generic?
-   - Are they sophisticated enough to understand the problem?
-   
-2. **Commercial Fit:** Can they afford to solve this?
-   - Does the business have budget?
-   - Is their margin high enough?
-   - Are they growing or struggling?
+- **YES:** "Yes, that's exactly us. I want to talk."
+- **NO:** "That's not our problem. Not interested."
 
-3. **Logistics Fit:** Can Saint & Story actually serve them?
-   - Are they in serviceable geography?
-   - Is their scale appropriate?
-   - Do they need sustained logistics support?
+We learn which pressures generate YES responses. Next batch targets those pressures.
 
-**Threshold:** 65% overall fit required to surface as "ready to contact"
+**Conversion happens at recognition, not pitch.**
 
-### PHASE 3: VERIFICATION (Before Sending)
+---
 
-**Pre-Send Checks:**
-- Is this business already in the queue? (last 90 days)
-- Has this business said NO before? (unsubscribed)
-- Is the email structured correctly?
-- Does it follow the locked psychological structure?
+## The Recognition Email Structure (Why It's Locked)
 
-### PHASE 4: EMAIL GENERATION
-
-**The Locked Email Structure** (non-negotiable):
+The email follows a precise psychological structure. We don't change it lightly:
 
 ```
 I need you to answer this honestly:
 
+[Personal request — makes them feel addressed]
+
 Some [peer group] in [location] say [situation].
 
-[specific detail about their exact Tuesday]
+[Peer validation — tribal knowledge, not surveillance]
 
-[validation that this is real and variable]
+[Specific detail about their exact coping mechanism]
+
+[Variability statement]
 
 Sound like your [timeframe]?
 
 [YES] [NO]
 ```
 
-**Why This Structure:**
-- Line 1: Personal request (makes them feel addressed)
-- Line 2: Peer validation (tribal knowledge, not targeting)
-- Line 3: Specific situation (proves you understand their world)
-- Line 4: Variability (validates their reality, not a trick question)
-- Line 5: Recognition question (are YOU the person this describes?)
-- Line 6: Binary choice (YES = recognized, NO = skip)
+**Why Each Line Matters:**
 
-**Why It Works:**
-- No sales pitch
-- No features
-- No "contact us for a call"
-- Just: "Does this describe you?"
-- Recognition comes first
-- Trust builds before pitch
+Line 1: "I need you to answer this honestly"
+- Makes it personal, not generic
+- Signals this is a real question, not a pitch
 
-### PHASE 5: TRACKING
+Line 2: "Some pharmacies in Manchester say..."
+- Peer validation (shared problem, not targeted weakness)
+- Location-specific (shows local understanding)
+- Starts with situation, not features
 
-**When Sent:**
-- Email ID generated
-- Send timestamp recorded
-- Business marked "sent"
-- Template preserved (for learning)
+Line 3: [Specific detail]
+- Describes their exact Tuesday coping mechanism
+- Demonstrates we understand their world
+- NOT describing them as broken, just realistic
 
-**When Opened:**
-- Open tracked
-- Status: "opened"
-- Signal: They're interested enough to read
+Line 4: [Variability]
+- Validates that this is real, unpredictable
+- Shows we understand the stakes
+- Not every day is a crisis day
 
-**When Clicked:**
-- Link click tracked
-- Status: "clicked"
-- Signal: They want to know more
+Line 5: "Sound like your Tuesday?"
+- Recognition question (do YOU feel this?)
+- Timeframe is situational (Tuesday, morning, week)
+- Not a sales question
 
-**When Responded:**
-- YES or NO recorded
-- This is the critical conversion moment
+Line 6: [YES] [NO]
+- One action per button
 - YES = "I recognize myself"
-- NO = "That's not us"
-
-### PHASE 6: LEARNING
-
-**What Gets Tracked:**
-- Pressure type → YES conversion rate
-- Pressure type → NO rate
-- Industry breakdowns
-- Geography patterns (future)
-- Timeframe patterns (future)
-
-**What Improves:**
-- Which pressure types actually convert (YES rate)
-- Which industries within each pressure are best prospects
-- When to send (timing optimization)
-- How to refine the recognition language
-
-**Learning Loop:**
-100 emails sent to "Time-Critical Movement" → 8 YES responses → 8% conversion
-100 emails sent to "Capacity Overflow" → 12 YES responses → 12% conversion
-→ System learns to prioritize Capacity Overflow
-→ Next batch focuses on Capacity Overflow
-→ Conversion rates improve over time
+- NO = "That's not our pressure"
 
 ---
 
-## The Dashboard (Operator Interface)
+## Manual Mode: How Operators Use It
 
-### Home Page: "Decision Screen"
+### Step 1: Search
+Operator enters UK postcode → system detects all businesses
 
-**What the Operator Sees:**
+### Step 2: Review
+System shows:
+- Business name, industry, location
+- Detected pressure type
+- Fit score (psychological + commercial + logistics)
+- Sorted by fit (highest first)
 
+### Step 3: Decide
+Operator clicks opportunity → sees:
+- Why we think this fits (detected pressure + fit breakdown)
+- Exact email to be sent (can't edit, ensures consistency)
+- Business contact details
+- Engagement tracking (if already sent)
+
+### Step 4: Send or Skip
+- [Send]: Records send timestamp, marks status "sent"
+- [Skip]: Moves to next prospect
+
+### Step 5: Track
+System tracks:
+- Send timestamp
+- Opens (if recipient opens email)
+- Clicks (if they click through)
+- Response: YES or NO
+
+### Step 6: Learn
+System learns:
+- Which pressure types generate YES responses
+- Which industries within each pressure convert
+- Conversion rates (8% for Time-Critical Movement, 12% for Capacity Overflow, etc.)
+
+Next batch targets high-converting pressure types.
+
+---
+
+## Autonomous Mode (Future)
+
+**When Ready:**
+- 24/7 nightly scan of entire UK
+- Auto-detects pressures for all postcodes
+- Auto-qualifies on fit
+- Auto-sends recognition emails (if fit > 65%)
+- Manual override (operator can approve before send)
+
+**Learning Loop:**
+- Every YES/NO response trains the system
+- Pressure type conversion rates improve over time
+- Geographic patterns emerge
+- Seasonal patterns emerge
+
+---
+
+## Current Feature Set (Live)
+
+✅ **Pressure Detection**
+- Claude analyzes business data
+- Identifies top 3 pressures
+- Confidence scoring
+
+✅ **Fit Qualification**
+- Psychological: Do they recognize themselves?
+- Commercial: Can they afford it?
+- Logistics: Can we serve them?
+- Threshold: 65% required
+
+✅ **Email Generation**
+- Pressure-specific recognition emails
+- Locked structure (no randomness)
+- Business name + location personalization
+
+✅ **Manual Mode**
+- Postcode search
+- Opportunity discovery
+- Send decision interface
+- Simple reporting
+
+✅ **Learning System**
+- YES/NO response tracking
+- Pressure type conversion rates
+- Performance ranking by pressure type
+- Deduplication (no double-contacting)
+
+---
+
+## Future Features (In Design)
+
+🔲 **Autonomous Mode**
+- Nightly UK-wide scans
+- Auto-send at 65%+ fit
+- Manual approval option
+
+🔲 **Database Persistence**
+- Currently in-memory (resets on restart)
+- Move to PostgreSQL
+- Historical tracking
+- Learning across sessions
+
+🔲 **Intelligence Refinement**
+- Geographic pattern detection
+- Seasonal pattern detection
+- Vertical deep dives (Pharmacies, Law firms, etc.)
+- Pressure sub-types (Time-Critical Movement → Same-Day Vs. Emergency)
+
+🔲 **Integration**
+- CRM sync (HubSpot, Salesforce)
+- Email platform integration (SendGrid, Mailgun)
+- Calendar integration (automatic follow-up scheduling)
+
+---
+
+## The Dashboard (What Operators See)
+
+### Decision Screen
 ```
 OPERATIONS
 Decision Screen.
 
-Pipeline | Upload
-
 POSTCODE
-[M1 1AA input field]
+[M1 1AA]
 
 SEARCH RADIUS
-[5 miles dropdown]
+[5 miles]
 
-[Scan Market button]
+[Scan Market]
+
+---
 
 PROCESS
-Detect          Test             Verify          Act
-Identify        Fit checks       Stress test     Make decision
-pressures
+Detect → Test → Verify → Act
 ```
 
-**After Search:**
+After search:
 
+```
 Ready to Contact: 7 opportunities
 
-[Card 1] Morrison's Pharmacy
-Pressure: Time-Critical Movement
-Fit: 78%
-[Click to decide]
+Morrison's Pharmacy
+Time-Critical Movement | 78% fit
+[View & Decide]
 
-[Card 2] John Lewis Distribution
-Pressure: Bulk Coordination  
-Fit: 85%
-[Click to decide]
+John Lewis Distribution
+Bulk Coordination | 85% fit
+[View & Decide]
 
 ...
-
-### Detail Page: "Company Decision"
-
-When operator clicks a company:
-
-**What's Shown:**
-
-1. **Why This Opportunity**
-   - Detected Pressure: Time-Critical Movement
-   - Fit Score: 78%
-   - Status: Ready
-
-2. **The Email They'll Send**
-   - Full email preview
-   - Can't edit (locked structure)
-   - Shows the exact recognition approach
-
-3. **Contact Details**
-   - Name, email, phone, website
-   - Industry, postcode
-
-4. **Action Buttons**
-   - [Send Email to Morrison's] - Records send
-   - [Mark as Replied] - If they respond
-   - Shows engagement (opens, clicks)
-
-### Reporting Page: "Outcomes"
-
-**What the Operator Sees:**
-
-Outcomes
-- Emails Sent: 47
-- Conversations Started: 8
-- Positive Responses: 6
-
-Next Steps
-- Scan another market → (operator action)
-- Follow up on replies → (operator action, if 8+ conversations)
-
-**What's NOT Shown:**
-- Vanity metrics (bounce rates, click rates)
-- Generic performance stats
-- Feature-specific data
-
-**Why:**
-- Operator only needs to know: What happened? What's next?
-- Everything else is noise
-
----
-
-## Technical Architecture
-
-### Frontend Stack
-- **Framework:** Next.js 15.5 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS + custom design system
-- **Design System:** Saint & Story (Operations Mode)
-  - Typography: System fonts (Inter body, serif display)
-  - Colors: #0A66C2 (brand), #222222 (navy), #F3F6F9 (surface)
-  - Philosophy: Quiet, utilitarian, typography-led hierarchy
-
-### Backend Stack
-- **Agent:** Claude API (Opus 4.8)
-  - Detects pressures via natural language analysis
-  - Qualifies fit across 3 dimensions
-  - Generates recognition emails
-  - Learns from YES/NO responses
-
-- **Data Structure:**
-  - In-memory email tracking (EmailTrackingSystem class)
-  - Learning metrics by pressure type
-  - Performance ranking
-  - Deduplication checks
-
-### Core Files
-
-**Libraries:**
-- `src/lib/pressure-situations.ts` — 46 pressure types × 100+ industry scenarios
-- `src/lib/recognition-email-generator.ts` — Email generation with locked structure validation
-- `src/lib/intelligence-lab-agent.ts` — Claude agent for detection, qualification, generation
-- `src/lib/email-tracking.ts` — Tracks sends, opens, clicks, YES/NO responses, learning metrics
-
-**API Routes:**
-- `app/api/analyze` — Manual mode: operator submits business, agent analyzes
-- `app/api/respond` — Captures YES/NO opt-ins from emails
-- `app/api/emails` — Lists sent emails by pressure type
-- `app/api/metrics` — Returns outcomes + learning metrics
-
-**Pages:**
-- `app/page.tsx` — Decision Screen (postcode search + opportunity list)
-- `app/admin/page.tsx` — Reporting (outcomes + next steps)
-- `app/company/page.tsx` — Company detail (decision point)
-
-### Database (Future)
-- Currently in-memory (learning resets on restart)
-- Future: PostgreSQL for persistence
-  - Sent emails + metadata
-  - YES/NO responses + timestamps
-  - Learning metrics (pressure type conversion rates)
-  - Deduplication checks
-
----
-
-## Key Constraints & Non-Negotiables
-
-### Email Structure (LOCKED)
-Cannot be changed without breaking the psychological model:
 ```
+
+### Company View
+```
+Morrison's Pharmacy
+Pharmacy • M1 1AA
+
+Detected Pressure: Time-Critical Movement
+Fit Score: 78%
+Status: Ready
+
+[Email Preview]
 I need you to answer this honestly:
-Some [peer] in [location] say [situation].
-[specific detail]
-[variability]
-Sound like your [timeframe]?
-[YES] [NO]
+Some pharmacies in Manchester say...
+
+Contact:
+Email: manager@morrisons-pharm.co.uk
+Phone: 0161 234 5678
+
+[Send Email to Morrison's] [Skip]
 ```
 
-### Pressure Situations (LOCKED)
-Each must be:
-- Specific (exact times, numbers, pain manifestations)
-- Industry-accurate (not generic)
-- Real (not manufactured)
-- Sympathetic (describes their coping, not their failure)
+### Reporting Page
+```
+Outcomes
 
-### Fit Threshold (LOCKED)
-- 65% overall (psychological + commercial + logistics)
-- Lower = send garbage, burn trust
-- Higher = miss opportunities
+Emails Sent: 47
+Conversations Started: 8
+Positive Responses: 6
 
-### YES/NO Model (LOCKED)
-- Not "Schedule call"
-- Not "Learn more"
-- Is: Recognition confirmation
-- Captures: Do you recognize yourself?
+Next Steps:
+→ Scan Another Market
+→ Follow Up on Replies (6 waiting)
+```
 
 ---
 
-## Current State
+## Key Metrics We Track
 
-**What's Live:**
-- ✅ Pressure detection (Claude agent)
-- ✅ 46 pressure types with 100+ scenarios
-- ✅ Recognition email generation
-- ✅ Fit qualification (3D testing)
-- ✅ Email tracking (sends, opens, clicks)
-- ✅ YES/NO response capture
-- ✅ Learning metrics (conversion by pressure type)
-- ✅ Decision Screen UI
-- ✅ Reporting UI
-- ✅ Company detail pages
-- ✅ API routes (analyze, respond, emails, metrics)
-
-**What's NOT Live (Future):**
-- Autonomous nightly scanning
-- Database persistence
-- Multi-location geographic analysis
-- Seasonal pattern detection
-- Industry vertical deep dives
-
----
-
-## How to Explain This to Someone
-
-### 30 Second Version
-"Intelligence Lab detects businesses with operational movement/logistics problems (pressures). It generates personalized emails that describe their exact situation so accurately they recognize themselves. They opt-in with YES/NO. System learns which pressure types convert best and improves targeting over time."
-
-### 2 Minute Version
-"Intelligence Lab is a decision intelligence system for B2B prospecting. Instead of 'Here's what we sell,' it says 'I understand your exact problem.' 
-
-System flow:
-1. Operator enters postcode
-2. Agent detects operational pressures (46 types)
-3. Agent qualifies fit (psychology, commerce, logistics)
-4. Operator sees ready-to-contact list
-5. Operator clicks → sees company + email preview
-6. Operator decides: send or skip
-7. Email describes their exact situation (recognition, not pitch)
-8. They opt-in: YES = 'I recognize myself' or NO = 'That's not us'
-9. System learns: which pressures convert, improves targeting
-
-The conversion happens at step 8 (recognition), not step 7 (email send). The email's job is just to make them feel understood."
-
-### For Another AI
-"Read SYSTEM_OVERVIEW.md (this file). Then implement Intelligence Lab improvements as requested. Critical: All changes must preserve the locked constraints (email structure, fit threshold, YES/NO model, pressure situations). Design decisions should follow Saint & Story convergence directive (Operations mode: quiet, utilitarian, typography-led). When in doubt about feature scope, check STOP_TEST.md in the main codebase."
-
----
-
-## Key Success Metrics
-
-**Not Measured:**
-- Email open rates (vanity)
-- Click rates (vanity)
-- Call booking rates (wrong conversion moment)
-
-**Measured:**
-- YES/NO response rate by pressure type
-- Conversion patterns (which pressures → which industries)
-- Operator usage (postcodes scanned per week)
+### What Matters
+- YES response rate by pressure type (which pressures convert?)
+- Operator usage (postcodes searched per week)
 - Decision rate (opportunities seen vs. contacted)
 
----
+### What Doesn't Matter
+- Email open rates (vanity)
+- Click rates (vanity)
+- Call booking rates (measures sales skill, not intelligence)
 
-## Handoff Checklist for Another AI
-
-Before another AI works on this, they should:
-
-1. ✅ Read this file (SYSTEM_OVERVIEW.md)
-2. ✅ Read pressure-situations.ts (understand all 46 types)
-3. ✅ Read recognition-email-generator.ts (understand email structure)
-4. ✅ Read intelligence-lab-agent.ts (understand detection + qualification)
-5. ✅ Test the live system at https://intelligence-lab.vercel.app
-6. ✅ Do a postcode search (manual mode)
-7. ✅ Click into a company detail page
-8. ✅ Review the recognition email structure
-9. ✅ Check admin/reporting page
-10. ✅ Ask: "What are the 46 pressure types?" (should answer from memory)
-
-If they can do all 10, they're ready.
+We measure: **Which pressures drive YES responses from prospects who recognize themselves?**
 
 ---
 
-## Why This Matters
+## Technical Foundation (For IT/Product)
 
-This system represents a shift from:
-- **Traditional:** "Here's what we do → buy it"
-- **To:** "I understand your exact problem → do you?"
+**Hosting:** Vercel (Next.js)
+**Agent:** Claude API (Opus) for intelligence
+**Database:** In-memory → PostgreSQL (v2)
+**Tracking:** Email metadata + YES/NO responses
 
-The intelligence isn't in the data we collect about them.
-The intelligence is in understanding their operational reality so accurately they feel understood before any sales conversation starts.
+**Design System:** Saint & Story Operations Mode
+- Quiet, utilitarian interface
+- Typography-led hierarchy
+- Minimal color usage
+- Zero marketing flavor
 
-That's the moat.
+---
+
+## Success Definition
+
+Intelligence Lab is successful when:
+
+1. **Operators use it daily** (not once a month)
+2. **Prospect recognition is immediate** (they YES within 24 hours)
+3. **Learning improves targeting** (pressure type conversion rates increase week-over-week)
+4. **Autonomous mode scales** (no manual intervention needed)
+5. **Intelligence becomes defensible** (we know which pressures in which industries convert for Saint & Story specifically)
+
+---
+
+## Knowledge Checkpoints
+
+New team members should be able to answer:
+
+1. What are the 46 operational pressure types? (Should list by dimension)
+2. Why is the email structure locked? (Should explain psychology)
+3. What does 65% fit mean? (Should articulate 3 dimensions)
+4. Why YES/NO not "Schedule Call"? (Should explain recognition vs. sales commitment)
+5. What does "autonomous mode" do? (Should describe 24/7 scanning)
+
+If they can answer these, they understand Intelligence Lab.
+
+---
+
+## Handing Off To Developers
+
+If a developer is improving Intelligence Lab, they must preserve:
+
+✅ **LOCKED (Non-negotiable):**
+- Email structure (lines must follow psychology)
+- Fit threshold (65% rule)
+- YES/NO model (not sales-oriented)
+- 46 pressure types (add pressures, don't remove)
+
+✅ **OPEN (Can evolve):**
+- UI layout
+- Reporting metrics
+- Database schema (must not break learning)
+- Autonomous scheduling (when/how to scan)
+
+---
+
+## Next Steps
+
+**This Week:**
+- Operators train on Decision Screen
+- First 50 postcodes scanned
+- Baseline conversion rates established
+
+**Next Month:**
+- Autonomous mode live (nightly scans)
+- Learning loop operational
+- Pressure type rankings visible
+
+**Q3:**
+- CRM integration (HubSpot/Salesforce)
+- Email platform integration
+- Vertical deep dives (Pharmacy focus)
+
+---
+
+## Questions?
+
+**"How does the system know which pressure a business has?"**
+Claude analyzes business data (reviews, website, location, industry) and identifies pressures.
+
+**"Can we edit the email?"**
+No. Structure is locked to preserve psychology. Personalization is: business name, location, peer group, pressure-specific details.
+
+**"What if 65% fit is too strict?"**
+It's a constraint until we have data. First 100 responses will validate.
+
+**"Can we sell services OTHER than logistics?"**
+No. System is pressure-centric to movement/logistics. You could fork it for other services.
+
+**"Why not just cold call?"**
+Because prospects don't think you understand them. Recognition changes that. Psychology > persistence.
